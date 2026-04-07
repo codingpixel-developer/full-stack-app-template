@@ -1,0 +1,9 @@
+[submodule "nest-template"]
+	path = nest-template
+	url = https://github.com/codingpixel-developer/nestjs-tempate.git
+[submodule "react-template"]
+	path = react-template
+	url = https://github.com/codingpixel-developer/react-template.git
+[submodule "next-template"]
+	path = next-template
+	url = https://github.com/codingpixel-developer/next-js-template.git

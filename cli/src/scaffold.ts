@@ -3,7 +3,7 @@ import path from 'path';
 import chalk from 'chalk';
 import { ProjectConfig } from './prompts';
 import { templates } from './templates';
-import { copyTemplate, renameAgentMdToClaudeMd } from './utils/copy';
+import { copyTemplate } from './utils/copy';
 import { createRootPackageJson } from './utils/workspace';
 import { initGitRepo } from './utils/git';
 import { generateClaudeMd } from './utils/claude-md';
@@ -61,7 +61,6 @@ async function scaffoldFullstack(
 
   console.log(chalk.gray(`Copying ${frontendTemplate.displayName} template...`));
   await copyTemplate(frontendTemplate.path, frontendPath);
-  await renameAgentMdToClaudeMd(frontendPath);
 
   console.log(chalk.gray(`Copying ${backendTemplate.displayName} template...`));
   await copyTemplate(backendTemplate.path, backendPath);
@@ -79,10 +78,6 @@ async function scaffoldStandalone(
 
   console.log(chalk.gray(`Copying ${template.displayName} template...`));
   await copyTemplate(template.path, targetPath);
-
-  if (template.type === 'frontend') {
-    await renameAgentMdToClaudeMd(targetPath);
-  }
 }
 
 async function copySharedSkills(

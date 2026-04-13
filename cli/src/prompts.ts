@@ -8,6 +8,8 @@ export interface ProjectConfig {
   projectType: ProjectType;
   frontend?: string;
   backend?: string;
+  includeAdmin: boolean;
+  includeMobile: boolean;
   initGit: boolean;
 }
 
@@ -73,6 +75,24 @@ export async function getProjectConfig(): Promise<ProjectConfig> {
     backend = selectedBackend;
   }
 
+  const { includeAdmin } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'includeAdmin',
+      message: 'Include admin panel? (React + Vite)',
+      default: false,
+    },
+  ]);
+
+  const { includeMobile } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'includeMobile',
+      message: 'Include mobile app? (coming soon — creates placeholder)',
+      default: false,
+    },
+  ]);
+
   const { initGit } = await inquirer.prompt([
     {
       type: 'confirm',
@@ -82,5 +102,5 @@ export async function getProjectConfig(): Promise<ProjectConfig> {
     },
   ]);
 
-  return { projectName, projectType, frontend, backend, initGit };
+  return { projectName, projectType, frontend, backend, includeAdmin, includeMobile, initGit };
 }

@@ -26,6 +26,31 @@ cd cli && npm link
 create-fullstack-app
 ```
 
+The CLI prompts for:
+
+| Prompt | Options |
+|--------|---------|
+| Project name | lowercase, hyphens only |
+| Project type | fullstack / frontend / backend |
+| Frontend | Next.js or React (Vite) |
+| Backend | NestJS |
+| Admin panel | copies `react-template` → `admin/` |
+| Mobile app | creates `mobile-app/` placeholder (coming soon) |
+| Git init | yes / no |
+
+### Generated project structure (fullstack + admin + mobile)
+
+```
+my-project/
+├── frontend/         # chosen frontend template
+├── backend/          # NestJS template
+├── admin/            # React (Vite) admin panel
+├── mobile-app/       # placeholder (CLAUDE.md only)
+├── .agent/skills/    # shared cross-cutting skills
+├── .gitignore
+└── CLAUDE.md
+```
+
 ## Repository Structure
 
 ```
@@ -45,7 +70,7 @@ Skills in `shared/skills/` are copied into every generated project and cover cro
 
 | Skill | Description |
 |-------|-------------|
-| `workflow-guide` | 8-stage development pipeline (brainstorm → deploy) |
+| `workflow-guide` | Feature-driven development pipeline (requirements → deploy) |
 | `create-feature` | End-to-end feature creation across the stack |
 | `add-database-entity` | Entity + CRUD API + frontend pages |
 | `add-authentication` | Wire up auth across frontend + backend |
@@ -64,9 +89,14 @@ Each template organises its AI agent knowledge into two folders:
 
 ## Development Workflow
 
-All work follows an 8-stage pipeline documented in `shared/skills/workflow-guide/SKILL.md`:
+Documented in `shared/skills/workflow-guide/SKILL.md`:
 
-1. Brainstorm → 2. Design → 3. Plan → 4. Scaffold → 5. Implement → 6. Test → 7. Review → 8. Deploy
+1. Requirements & Specification → client approval
+2. Data Modeling (ERD)
+3. Theme Definition (colors, typography, spacing)
+4. Design Spec (Figma-first or build-while-designing)
+5. Reusable Components audit
+6. Per-feature build cycle: document → build UI → integrate APIs → test
 
 ## Updating Submodules
 

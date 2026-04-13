@@ -25,8 +25,8 @@ node dist/index.js
 Each template has its own documentation:
 
 - [nest-template/CLAUDE.md](nest-template/CLAUDE.md) — NestJS conventions and skills
-- [react-template/AGENT.md](react-template/AGENT.md) — React conventions and skills
-- [next-template/AGENT.md](next-template/AGENT.md) — Next.js conventions and skills
+- [react-template/CLAUDE.md](react-template/CLAUDE.md) — React conventions and skills
+- [next-template/CLAUDE.md](next-template/CLAUDE.md) — Next.js conventions and skills
 
 ## Shared Skills
 

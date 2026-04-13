@@ -22,11 +22,3 @@ export async function copyTemplate(
   });
 }
 
-export async function renameAgentMdToClaudeMd(targetPath: string): Promise<void> {
-  const agentMdPath = path.join(targetPath, 'AGENT.md');
-  const claudeMdPath = path.join(targetPath, 'CLAUDE.md');
-
-  if (await fse.pathExists(agentMdPath)) {
-    await fse.rename(agentMdPath, claudeMdPath);
-  }
-}

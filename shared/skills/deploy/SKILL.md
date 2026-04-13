@@ -1,51 +1,50 @@
 ---
 name: deploy
-description: Coordinates deployment setup across the full stack. Delegates to each sub-project's own deployment skills for Dockerfiles and CI/CD workflows. Adds path-scoped triggers for combined projects.
+description: Use when setting up deployment for any template in this project. Delegates to the appropriate sub-project skill based on the template being deployed.
 ---
 
-# Deploy (Full-Stack)
+# Skill: Deploy
 
-## Overview
+Deployment is handled per-template. Each template has its own skill(s) covering the full setup — Dockerfile (where applicable) and GitHub Actions workflow.
 
-This skill orchestrates deployment setup across the entire project. It does not generate Dockerfiles or workflows directly — it delegates to each sub-project's existing deployment skills and coordinates them.
+---
 
-## Step 1: Ask the User
+## NestJS Template (`nest-template/`)
 
-1. **Target environment** — staging or production?
-2. **Which parts to deploy?** — frontend only, backend only, or both?
+| Task | Skill |
+|------|-------|
+| Generate a multi-stage Dockerfile | `nest-template/.agent/skills/write-dockerfile/SKILL.md` |
+| Create a GitHub Actions workflow (Docker → SSH deploy) | `nest-template/.agent/skills/github-workflow-docker-deploy/SKILL.md` |
 
-## Step 2: Backend Deployment
+**Pattern:** Two-stage Docker build → push to GHCR → SSH deploy → run migrations → restart container.
 
-If the project has a backend, delegate to the backend's deployment skills:
+---
 
-1. Invoke the `write-dockerfile` skill in `backend/` — it will ask for app name and port
-2. Invoke the `github-workflow-docker-deploy` skill in `backend/` — it will ask for environment, env file path, app name, and port
+## Next.js Template (`next-template/`)
 
-## Step 3: Frontend Deployment
+| Task | Skill |
+|------|-------|
+| Generate a multi-stage Dockerfile | `next-template/.agent/skills/write-dockerfile/SKILL.md` |
+| Create a GitHub Actions workflow (Docker → SSH deploy) | `next-template/.agent/skills/github-workflow-docker-deploy/SKILL.md` |
 
-If the project has a frontend, set up the frontend deployment:
+**Pattern:** Two-stage Docker build using Next.js `standalone` output → push to GHCR → SSH deploy → restart container. No migrations.
 
-- **Next.js**: Uses `output: "standalone"` — generate a Dockerfile following the same two-stage pattern as the backend (build stage + production stage with `node server.js`)
-- **React (Vite)**: Static build — generate a Dockerfile with nginx serving the built assets, or configure for static hosting (Vercel, Netlify, S3)
+---
 
-## Step 4: Path-Scoped Triggers (Full-Stack Only)
+## React Template (`react-template/`)
 
-For combined projects, modify the generated GitHub Actions workflow files to add path filters:
+| Task | Skill |
+|------|-------|
+| Create a GitHub Actions workflow (SCP → nginx deploy) | `react-template/.agent/skills/github-workflow-deploy/SKILL.md` |
 
-Backend workflow — add to the `on.push` trigger:
-```yaml
-paths:
-  - 'backend/**'
-```
+**Pattern:** Vite builds `dist/` → `.env` fetched from server before build → SCP `dist/` to server → nginx serves static files. No Docker needed.
 
-Frontend workflow — add to the `on.push` trigger:
-```yaml
-paths:
-  - 'frontend/**'
-```
+---
 
-This ensures pushing changes to one sub-project only triggers that sub-project's deployment.
+## Which skill to use?
 
-## Standalone Projects
-
-For standalone projects, skip Step 4. The workflow triggers on the branch directly without path filtering.
+| Template | Has Dockerfile? | Deploy target |
+|----------|----------------|---------------|
+| `nest-template` | Yes — required | Docker container on Ubuntu |
+| `next-template` | Yes — required | Docker container on Ubuntu |
+| `react-template` | No | nginx on Ubuntu (static files via SCP) |

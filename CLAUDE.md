@@ -20,6 +20,14 @@ cd cli && npm install && npm run build
 node dist/index.js
 ```
 
+The CLI prompts for:
+- Project name and type (fullstack / frontend / backend)
+- Frontend template (Next.js or React/Vite)
+- Backend template (NestJS)
+- Admin panel — copies `react-template` into `admin/`
+- Mobile app — creates `mobile-app/` placeholder with empty `CLAUDE.md` (coming soon)
+- Git init
+
 ## Templates
 
 Each template has its own documentation:
@@ -34,7 +42,7 @@ Cross-cutting skills in `shared/skills/` are copied into generated projects:
 
 | Skill | Description |
 |-------|-------------|
-| workflow-guide | 8-stage development pipeline reference |
+| workflow-guide | Feature-driven development pipeline reference |
 | create-feature | End-to-end feature creation across the stack |
 | add-database-entity | Entity + CRUD API + frontend pages |
 | add-authentication | Wire up auth across frontend + backend |

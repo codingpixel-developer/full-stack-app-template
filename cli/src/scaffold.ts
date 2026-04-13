@@ -44,6 +44,12 @@ export async function scaffold(config: ProjectConfig): Promise<void> {
   if (config.projectType === 'fullstack') {
     console.log(chalk.gray(`  npm run dev:backend`));
     console.log(chalk.gray(`  npm run dev:frontend`));
+    if (config.includeAdmin) {
+      console.log(chalk.gray(`  npm run dev:admin`));
+    }
+    if (config.includeMobile) {
+      console.log(chalk.yellow(`  mobile-app/ — placeholder created (coming soon)`));
+    }
   } else {
     console.log(chalk.gray(`  npm run dev`));
   }
@@ -65,8 +71,25 @@ async function scaffoldFullstack(
   console.log(chalk.gray(`Copying ${backendTemplate.displayName} template...`));
   await copyTemplate(backendTemplate.path, backendPath);
 
+  if (config.includeAdmin) {
+    const adminTemplate = templates['react'];
+    const adminPath = path.join(targetPath, 'admin');
+    console.log(chalk.gray('Copying React (Vite) template for admin panel...'));
+    await copyTemplate(adminTemplate.path, adminPath);
+  }
+
+  if (config.includeMobile) {
+    const mobilePath = path.join(targetPath, 'mobile-app');
+    console.log(chalk.gray('Creating mobile-app placeholder...'));
+    await fse.ensureDir(mobilePath);
+    await fse.writeFile(
+      path.join(mobilePath, 'CLAUDE.md'),
+      '# Mobile App\n\n> Coming soon.\n',
+    );
+  }
+
   console.log(chalk.gray('Setting up npm workspaces...'));
-  await createRootPackageJson(targetPath, config.projectName);
+  await createRootPackageJson(targetPath, config);
 }
 
 async function scaffoldStandalone(

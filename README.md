@@ -33,7 +33,7 @@ The CLI prompts for:
 | Project name | lowercase, hyphens only |
 | Project type | fullstack / frontend / backend |
 | Frontend | Next.js or React (Vite) |
-| Backend | NestJS |
+| Backend | NestJS, Supabase (coming soon), Firebase (coming soon) |
 | Admin panel | copies `react-template` → `admin/` |
 | Mobile app | creates `mobile-app/` placeholder (coming soon) |
 | Git init | yes / no |

@@ -23,7 +23,7 @@ node dist/index.js
 The CLI prompts for:
 - Project name and type (fullstack / frontend / backend)
 - Frontend template (Next.js or React/Vite)
-- Backend template (NestJS)
+- Backend template (NestJS, Supabase — coming soon, Firebase — coming soon)
 - Admin panel — copies `react-template` into `admin/`
 - Mobile app — creates `mobile-app/` placeholder with empty `CLAUDE.md` (coming soon)
 - Git init

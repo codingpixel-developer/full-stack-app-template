@@ -6,8 +6,9 @@ export interface Template {
   name: string;
   displayName: string;
   type: TemplateType;
-  path: string;
+  path?: string;
   description: string;
+  comingSoon?: boolean;
 }
 
 const TEMPLATES_ROOT = path.resolve(__dirname, '../../');
@@ -33,6 +34,20 @@ export const templates: Record<string, Template> = {
     type: 'frontend',
     path: path.join(TEMPLATES_ROOT, 'next-template'),
     description: 'Next.js 16 App Router with Tailwind CSS v4, Redux Toolkit, next-themes',
+  },
+  supabase: {
+    name: 'supabase',
+    displayName: 'Supabase',
+    type: 'backend',
+    description: 'Hosted Postgres + auth + storage',
+    comingSoon: true,
+  },
+  firebase: {
+    name: 'firebase',
+    displayName: 'Firebase',
+    type: 'backend',
+    description: 'Firestore + auth + cloud functions',
+    comingSoon: true,
   },
 };
 

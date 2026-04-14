@@ -67,7 +67,7 @@ export async function getProjectConfig(): Promise<ProjectConfig> {
         name: 'selectedBackend',
         message: 'Pick a backend:',
         choices: backendTemplates.map((t) => ({
-          name: `${t.displayName} — ${t.description}`,
+          name: `${t.displayName}${t.comingSoon ? ' (coming soon)' : ''} — ${t.description}`,
           value: t.name,
         })),
       },

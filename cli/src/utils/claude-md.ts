@@ -5,8 +5,6 @@ import { ModuleEntry, ModuleKey } from '../manifest';
 import { MODULE_LABELS } from '../prompts';
 import { templates } from '../templates';
 
-const SHARED_ROOT = path.resolve(__dirname, '../../../shared');
-
 interface ModuleView {
   key: ModuleKey;
   label: string;
@@ -40,9 +38,11 @@ export async function generateClaudeMd(
   targetPath: string,
   projectName: string,
   modules: Partial<Record<ModuleKey, ModuleEntry>>,
+  sharedDir: string,
 ): Promise<void> {
-  const rootFile = path.join(SHARED_ROOT, 'claude', 'root.claude.md');
-  const fullstackFile = path.join(SHARED_ROOT, 'claude', 'fullstack.claude.md');
+  const claudeRoot = path.join(sharedDir, 'claude');
+  const rootFile = path.join(claudeRoot, 'root.claude.md');
+  const fullstackFile = path.join(claudeRoot, 'fullstack.claude.md');
 
   const view = { projectName, modules: buildModuleViews(modules) };
 

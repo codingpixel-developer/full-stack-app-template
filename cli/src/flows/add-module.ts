@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import fse from 'fs-extra';
 import {
   promptModuleSelection,
   buildModuleEntries,
@@ -9,6 +10,7 @@ import {
   workspaceFolders,
   skillsForModules,
   copySharedSkills,
+  fetchSharedDir,
 } from '../scaffold';
 import { mergeRootPackageJson } from '../utils/workspace';
 import {
@@ -54,7 +56,12 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
   }
 
   const mergedModules = { ...manifest.modules, ...newEntries };
-  await copySharedSkills(projectDir, skillsForModules(mergedModules));
+  const sharedDir = await fetchSharedDir();
+  try {
+    await copySharedSkills(projectDir, skillsForModules(mergedModules), sharedDir);
+  } finally {
+    await fse.remove(sharedDir);
+  }
 
   const updated = mergeManifest(manifest, newEntries);
   await writeManifest(projectDir, updated);

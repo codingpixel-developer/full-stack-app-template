@@ -1,37 +1,59 @@
 import fse from 'fs-extra';
 import path from 'path';
-import { ProjectConfig } from '../prompts';
+
+function scriptsFor(folders: string[]): Record<string, string> {
+  const scripts: Record<string, string> = {};
+  for (const folder of folders) {
+    scripts[`dev:${folder}`] = `npm run dev --workspace=${folder}`;
+    scripts[`build:${folder}`] = `npm run build --workspace=${folder}`;
+    scripts[`test:${folder}`] = `npm run test --workspace=${folder}`;
+  }
+  return scripts;
+}
 
 export async function createRootPackageJson(
   targetPath: string,
-  config: ProjectConfig,
+  projectName: string,
+  folders: string[],
 ): Promise<void> {
-  const workspaces = ['frontend', 'backend'];
-  if (config.includeAdmin) workspaces.push('admin');
-
-  const scripts: Record<string, string> = {
-    'dev:frontend': 'npm run dev --workspace=frontend',
-    'dev:backend': 'npm run dev --workspace=backend',
-    'build:frontend': 'npm run build --workspace=frontend',
-    'build:backend': 'npm run build --workspace=backend',
-    'test:frontend': 'npm run test --workspace=frontend',
-    'test:backend': 'npm run test --workspace=backend',
-  };
-
-  if (config.includeAdmin) {
-    scripts['dev:admin'] = 'npm run dev --workspace=admin';
-    scripts['build:admin'] = 'npm run build --workspace=admin';
-  }
-
   const packageJson = {
-    name: config.projectName,
+    name: projectName,
     version: '1.0.0',
     private: true,
-    workspaces,
-    scripts,
+    workspaces: folders,
+    scripts: scriptsFor(folders),
   };
 
   await fse.writeJson(path.join(targetPath, 'package.json'), packageJson, {
     spaces: 2,
   });
+}
+
+export async function mergeRootPackageJson(
+  targetPath: string,
+  newFolders: string[],
+): Promise<void> {
+  const pkgPath = path.join(targetPath, 'package.json');
+  const existing = (await fse.pathExists(pkgPath)) ? await fse.readJson(pkgPath) : {};
+
+  const currentWorkspaces: string[] = Array.isArray(existing.workspaces)
+    ? existing.workspaces
+    : [];
+  const mergedWorkspaces = Array.from(new Set([...currentWorkspaces, ...newFolders]));
+
+  const existingScripts: Record<string, string> = existing.scripts || {};
+  const newScripts = scriptsFor(newFolders);
+  const mergedScripts = { ...existingScripts };
+  for (const [k, v] of Object.entries(newScripts)) {
+    if (!(k in mergedScripts)) mergedScripts[k] = v;
+  }
+
+  const merged = {
+    ...existing,
+    private: true,
+    workspaces: mergedWorkspaces,
+    scripts: mergedScripts,
+  };
+
+  await fse.writeJson(pkgPath, merged, { spaces: 2 });
 }

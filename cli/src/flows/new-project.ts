@@ -15,6 +15,7 @@ import {
   createGitignore,
   skillsForModules,
   copySharedSkills,
+  fetchSharedDir,
 } from '../scaffold';
 import { createRootPackageJson } from '../utils/workspace';
 import { generateClaudeMd } from '../utils/claude-md';
@@ -46,8 +47,13 @@ export async function runNewProject(): Promise<void> {
     await createRootPackageJson(targetPath, projectName, folders);
   }
 
-  await generateClaudeMd(targetPath, projectName, modules);
-  await copySharedSkills(targetPath, skillsForModules(modules));
+  const sharedDir = await fetchSharedDir();
+  try {
+    await generateClaudeMd(targetPath, projectName, modules, sharedDir);
+    await copySharedSkills(targetPath, skillsForModules(modules), sharedDir);
+  } finally {
+    await fse.remove(sharedDir);
+  }
   await createGitignore(targetPath);
 
   const manifest: Manifest = {

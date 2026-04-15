@@ -1,12 +1,12 @@
 import fse from 'fs-extra';
 import path from 'path';
+import os from 'os';
 import chalk from 'chalk';
 import { templates } from './templates';
 import { ModuleEntry, ModuleKey } from './manifest';
 import { MODULE_LABELS, isComingSoon } from './prompts';
-import { copyTemplate } from './utils/copy';
-
-const SHARED_SKILLS_ROOT = path.resolve(__dirname, '../../shared/skills');
+import { fetchRepo } from './utils/fetch-repo';
+import { parentSpec, templateSpec } from './config';
 
 export function skillsForModules(
   modules: Partial<Record<ModuleKey, ModuleEntry>>,
@@ -25,12 +25,13 @@ export function skillsForModules(
 export async function copySharedSkills(
   targetPath: string,
   skills: string[],
+  sharedDir: string,
 ): Promise<void> {
   const skillsTarget = path.join(targetPath, '.agent', 'skills');
   await fse.ensureDir(skillsTarget);
   let copied = 0;
   for (const skill of skills) {
-    const src = path.join(SHARED_SKILLS_ROOT, skill);
+    const src = path.join(sharedDir, 'skills', skill);
     const dest = path.join(skillsTarget, skill);
     if (await fse.pathExists(dest)) continue;
     if (await fse.pathExists(src)) {
@@ -39,6 +40,13 @@ export async function copySharedSkills(
     }
   }
   if (copied) console.log(chalk.gray(`Copied ${copied} shared skill(s)`));
+}
+
+export async function fetchSharedDir(): Promise<string> {
+  const tmp = path.join(os.tmpdir(), `cfsa-shared-${process.pid}-${Date.now()}`);
+  console.log(chalk.gray('Fetching shared resources from repository...'));
+  await fetchRepo(parentSpec('shared'), tmp);
+  return tmp;
 }
 
 export async function scaffoldModule(
@@ -80,8 +88,8 @@ export async function scaffoldModule(
     return;
   }
 
-  console.log(chalk.gray(`Copying ${template.displayName} template to ${entry.folder}/...`));
-  await copyTemplate(template.path!, modulePath);
+  console.log(chalk.gray(`Fetching ${template.displayName} template -> ${entry.folder}/...`));
+  await fetchRepo(templateSpec(template.repo!, template.repoRef), modulePath);
 }
 
 export function workspaceFolders(

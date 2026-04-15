@@ -2,9 +2,9 @@
 
 ## Tech Stack
 
-<% if (frontend) { %>- **Frontend**: <%= frontend.displayName %><% if (projectType === 'fullstack') { %> — see `frontend/CLAUDE.md`<% } %>
-<% } %><% if (backend) { %>- **Backend**: <%= backend.displayName %><% if (projectType === 'fullstack') { %> — see `backend/CLAUDE.md`<% } %>
-<% } %>
+<% modules.forEach(function(m) { -%>
+- **<%= m.label %>**: <%= m.templateDisplay %><% if (m.hasClaudeMd) { %> — see `<%= m.folder %>/CLAUDE.md`<% } %>
+<% }); -%>
 
 ## Workflow Pipeline
 

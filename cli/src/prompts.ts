@@ -1,19 +1,32 @@
 import inquirer from 'inquirer';
-import { getFrontendTemplates, getBackendTemplates } from './templates';
+import { getFrontendTemplates, getBackendTemplates, templates } from './templates';
+import { ModuleKey, ModuleEntry } from './manifest';
 
-export type ProjectType = 'fullstack' | 'frontend' | 'backend';
+export const MODULE_FOLDERS: Record<ModuleKey, string> = {
+  webApp: 'web-app',
+  backend: 'backend',
+  admin: 'admin',
+  mobile: 'mobile-app',
+};
 
-export interface ProjectConfig {
+export const MODULE_LABELS: Record<ModuleKey, string> = {
+  webApp: 'Web app (frontend)',
+  backend: 'Backend API',
+  admin: 'Admin panel (React + Vite)',
+  mobile: 'Mobile app (coming soon)',
+};
+
+export interface NewProjectConfig {
   projectName: string;
-  projectType: ProjectType;
-  frontend?: string;
-  backend?: string;
-  includeAdmin: boolean;
-  includeMobile: boolean;
+  modules: Partial<Record<ModuleKey, ModuleEntry>>;
   initGit: boolean;
 }
 
-export async function getProjectConfig(): Promise<ProjectConfig> {
+export interface AddModuleConfig {
+  modules: Partial<Record<ModuleKey, ModuleEntry>>;
+}
+
+export async function promptProjectName(): Promise<string> {
   const { projectName } = await inquirer.prompt([
     {
       type: 'input',
@@ -26,73 +39,69 @@ export async function getProjectConfig(): Promise<ProjectConfig> {
       },
     },
   ]);
+  return projectName;
+}
 
-  const { projectType } = await inquirer.prompt([
+export async function promptModuleSelection(
+  installed: Partial<Record<ModuleKey, ModuleEntry>> = {},
+): Promise<ModuleKey[]> {
+  const keys: ModuleKey[] = ['webApp', 'backend', 'admin', 'mobile'];
+  const choices = keys.map((k) => {
+    const isInstalled = !!installed[k];
+    return {
+      name: `${MODULE_LABELS[k]}${isInstalled ? ' (installed)' : ''}`,
+      value: k,
+      disabled: isInstalled ? 'already installed' : false,
+    };
+  });
+
+  const { selected } = await inquirer.prompt([
     {
-      type: 'list',
-      name: 'projectType',
-      message: 'What do you want to create?',
-      choices: [
-        { name: 'Full-stack (frontend + backend)', value: 'fullstack' },
-        { name: 'Frontend only', value: 'frontend' },
-        { name: 'Backend only', value: 'backend' },
-      ],
+      type: 'checkbox',
+      name: 'selected',
+      message: 'Select modules to include:',
+      choices,
+      validate: (input: ModuleKey[]) =>
+        input.length > 0 ? true : 'Pick at least one module',
     },
   ]);
+  return selected;
+}
 
-  let frontend: string | undefined;
-  let backend: string | undefined;
-
-  if (projectType === 'fullstack' || projectType === 'frontend') {
-    const frontendTemplates = getFrontendTemplates();
-    const { selectedFrontend } = await inquirer.prompt([
+export async function promptTemplateFor(moduleKey: ModuleKey): Promise<string> {
+  if (moduleKey === 'webApp') {
+    const { t } = await inquirer.prompt([
       {
         type: 'list',
-        name: 'selectedFrontend',
-        message: 'Pick a frontend:',
-        choices: frontendTemplates.map((t) => ({
-          name: `${t.displayName} — ${t.description}`,
-          value: t.name,
+        name: 't',
+        message: 'Pick a web-app template:',
+        choices: getFrontendTemplates().map((tpl) => ({
+          name: `${tpl.displayName} — ${tpl.description}`,
+          value: tpl.name,
         })),
       },
     ]);
-    frontend = selectedFrontend;
+    return t;
   }
-
-  if (projectType === 'fullstack' || projectType === 'backend') {
-    const backendTemplates = getBackendTemplates();
-    const { selectedBackend } = await inquirer.prompt([
+  if (moduleKey === 'backend') {
+    const { t } = await inquirer.prompt([
       {
         type: 'list',
-        name: 'selectedBackend',
-        message: 'Pick a backend:',
-        choices: backendTemplates.map((t) => ({
-          name: `${t.displayName}${t.comingSoon ? ' (coming soon)' : ''} — ${t.description}`,
-          value: t.name,
+        name: 't',
+        message: 'Pick a backend template:',
+        choices: getBackendTemplates().map((tpl) => ({
+          name: `${tpl.displayName}${tpl.comingSoon ? ' (coming soon)' : ''} — ${tpl.description}`,
+          value: tpl.name,
         })),
       },
     ]);
-    backend = selectedBackend;
+    return t;
   }
+  if (moduleKey === 'admin') return 'react';
+  return 'placeholder';
+}
 
-  const { includeAdmin } = await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'includeAdmin',
-      message: 'Include admin panel? (React + Vite)',
-      default: false,
-    },
-  ]);
-
-  const { includeMobile } = await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'includeMobile',
-      message: 'Include mobile app? (coming soon — creates placeholder)',
-      default: false,
-    },
-  ]);
-
+export async function promptInitGit(): Promise<boolean> {
   const { initGit } = await inquirer.prompt([
     {
       type: 'confirm',
@@ -101,6 +110,22 @@ export async function getProjectConfig(): Promise<ProjectConfig> {
       default: true,
     },
   ]);
+  return initGit;
+}
 
-  return { projectName, projectType, frontend, backend, includeAdmin, includeMobile, initGit };
+export async function buildModuleEntries(
+  selected: ModuleKey[],
+): Promise<Partial<Record<ModuleKey, ModuleEntry>>> {
+  const entries: Partial<Record<ModuleKey, ModuleEntry>> = {};
+  for (const key of selected) {
+    const template = await promptTemplateFor(key);
+    entries[key] = { template, folder: MODULE_FOLDERS[key] };
+  }
+  return entries;
+}
+
+export function isComingSoon(entry: ModuleEntry, moduleKey: ModuleKey): boolean {
+  if (moduleKey === 'mobile') return true;
+  const t = templates[entry.template];
+  return !!t?.comingSoon;
 }

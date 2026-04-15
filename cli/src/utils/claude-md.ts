@@ -1,66 +1,56 @@
 import fse from 'fs-extra';
 import ejs from 'ejs';
 import path from 'path';
-import { ProjectConfig } from '../prompts';
+import { ModuleEntry, ModuleKey } from '../manifest';
+import { MODULE_LABELS } from '../prompts';
 import { templates } from '../templates';
 
 const SHARED_ROOT = path.resolve(__dirname, '../../../shared');
 
-export async function generateClaudeMd(
-  targetPath: string,
-  config: ProjectConfig,
-): Promise<void> {
-  if (config.projectType === 'fullstack') {
-    await generateFullstackClaudeMd(targetPath, config);
-  } else {
-    await generateStandaloneClaudeMd(targetPath, config);
-  }
+interface ModuleView {
+  key: ModuleKey;
+  label: string;
+  folder: string;
+  templateDisplay: string;
+  hasClaudeMd: boolean;
 }
 
-async function generateFullstackClaudeMd(
+function buildModuleViews(
+  modules: Partial<Record<ModuleKey, ModuleEntry>>,
+): ModuleView[] {
+  const order: ModuleKey[] = ['webApp', 'backend', 'admin', 'mobile'];
+  const views: ModuleView[] = [];
+  for (const key of order) {
+    const entry = modules[key];
+    if (!entry) continue;
+    const t = templates[entry.template];
+    const isPlaceholder = key === 'mobile' || !!t?.comingSoon;
+    views.push({
+      key,
+      label: MODULE_LABELS[key],
+      folder: entry.folder,
+      templateDisplay: t ? t.displayName : 'Placeholder',
+      hasClaudeMd: !isPlaceholder,
+    });
+  }
+  return views;
+}
+
+export async function generateClaudeMd(
   targetPath: string,
-  config: ProjectConfig,
+  projectName: string,
+  modules: Partial<Record<ModuleKey, ModuleEntry>>,
 ): Promise<void> {
-  const templateFile = path.join(SHARED_ROOT, 'claude', 'root.claude.md');
+  const rootFile = path.join(SHARED_ROOT, 'claude', 'root.claude.md');
   const fullstackFile = path.join(SHARED_ROOT, 'claude', 'fullstack.claude.md');
 
-  const rootContent = await renderTemplate(templateFile, config);
-  const fullstackContent = await renderTemplate(fullstackFile, config);
+  const view = { projectName, modules: buildModuleViews(modules) };
+
+  const rootContent = ejs.render(await fse.readFile(rootFile, 'utf-8'), view);
+  const fullstackContent = ejs.render(await fse.readFile(fullstackFile, 'utf-8'), view);
 
   await fse.writeFile(
     path.join(targetPath, 'CLAUDE.md'),
     rootContent + '\n' + fullstackContent,
   );
-}
-
-async function generateStandaloneClaudeMd(
-  targetPath: string,
-  config: ProjectConfig,
-): Promise<void> {
-  const templateFile = path.join(SHARED_ROOT, 'claude', 'root.claude.md');
-  const standaloneFile = path.join(SHARED_ROOT, 'claude', 'standalone.claude.md');
-
-  const rootContent = await renderTemplate(templateFile, config);
-  const standaloneContent = await renderTemplate(standaloneFile, config);
-
-  await fse.writeFile(
-    path.join(targetPath, 'CLAUDE.md'),
-    rootContent + '\n' + standaloneContent,
-  );
-}
-
-async function renderTemplate(
-  templateFile: string,
-  config: ProjectConfig,
-): Promise<string> {
-  const template = await fse.readFile(templateFile, 'utf-8');
-  const frontendTemplate = config.frontend ? templates[config.frontend] : undefined;
-  const backendTemplate = config.backend ? templates[config.backend] : undefined;
-
-  return ejs.render(template, {
-    projectName: config.projectName,
-    projectType: config.projectType,
-    frontend: frontendTemplate,
-    backend: backendTemplate,
-  });
 }

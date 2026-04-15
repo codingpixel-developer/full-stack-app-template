@@ -1,6 +1,6 @@
 {
   "name": "@codingpixel/create-fullstack-app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI to scaffold full-stack projects (Next.js, React, NestJS) with modular web-app, backend, admin, and mobile options",
   "keywords": [
     "cli",
@@ -24,7 +24,7 @@
     "create-fullstack-app": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/index.js",
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js",
     "prepublishOnly": "npm run build"

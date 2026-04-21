@@ -11,6 +11,7 @@ import {
   skillsForModules,
   copySharedSkills,
   copySharedAgents,
+  ensureClaudeState,
   fetchSharedDir,
 } from '../scaffold';
 import { mergeRootPackageJson } from '../utils/workspace';
@@ -61,6 +62,7 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
   try {
     await copySharedSkills(projectDir, skillsForModules(mergedModules), sharedDir);
     await copySharedAgents(projectDir, sharedDir);
+    await ensureClaudeState(projectDir);
   } finally {
     await fse.remove(sharedDir);
   }

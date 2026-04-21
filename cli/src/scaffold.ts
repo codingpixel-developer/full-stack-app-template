@@ -62,6 +62,15 @@ export async function copySharedAgents(
   if (copied) console.log(chalk.gray(`Copied ${copied} shared agent(s) to .claude/agents/`));
 }
 
+export async function ensureClaudeState(targetPath: string): Promise<void> {
+  const stateDir = path.join(targetPath, '.claude', 'state');
+  await fse.ensureDir(stateDir);
+  const queueFile = path.join(stateDir, 'feature-queue.json');
+  if (!(await fse.pathExists(queueFile))) {
+    await fse.writeJson(queueFile, { queue: [] }, { spaces: 2 });
+  }
+}
+
 export async function fetchSharedDir(): Promise<string> {
   const tmp = path.join(os.tmpdir(), `cfsa-shared-${process.pid}-${Date.now()}`);
   console.log(chalk.gray('Fetching shared resources from repository...'));

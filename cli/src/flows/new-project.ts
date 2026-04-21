@@ -16,6 +16,7 @@ import {
   skillsForModules,
   copySharedSkills,
   copySharedAgents,
+  ensureClaudeState,
   fetchSharedDir,
 } from '../scaffold';
 import { createRootPackageJson } from '../utils/workspace';
@@ -53,6 +54,7 @@ export async function runNewProject(): Promise<void> {
     await generateClaudeMd(targetPath, projectName, modules, sharedDir);
     await copySharedSkills(targetPath, skillsForModules(modules), sharedDir);
     await copySharedAgents(targetPath, sharedDir);
+    await ensureClaudeState(targetPath);
   } finally {
     await fse.remove(sharedDir);
   }

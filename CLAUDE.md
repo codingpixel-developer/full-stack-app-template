@@ -48,3 +48,24 @@ Cross-cutting skills in `shared/skills/` are copied into generated projects:
 | add-authentication | Wire up auth across frontend + backend |
 | deploy | Dockerize + CI/CD (delegates to sub-project skills) |
 | create-tests | Testing strategy across the full stack |
+| workflow-feature | Orchestrator skill that drives the per-feature subagent pipeline |
+
+## Shared Agents
+
+Cross-cutting subagents in `shared/agents/` are copied into generated projects at `.claude/agents/`. They drive the per-feature pipeline orchestrated by the `workflow-feature` skill.
+
+| Agent | Role |
+|-------|------|
+| feature-planner | Write the feature plan file |
+| api-contract-designer | Lock request/response shapes |
+| backend-builder | Implement backend (parallel with frontend) |
+| frontend-builder | Implement UI (parallel with backend) |
+| integration-wire | Wire UI to API, handle all states |
+| test-author | Write business-logic tests |
+| code-reviewer | Review diff against plan and conventions |
+| commit-pr-agent | Conventional commit + PR |
+| test-runner | Background full test suite |
+| build-verifier | Background typecheck/lint/build |
+| doc-updater | Background CLAUDE.md updates after merge |
+
+Orchestration logic: [shared/skills/workflow-feature/SKILL.md](shared/skills/workflow-feature/SKILL.md).

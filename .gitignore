@@ -5,4 +5,10 @@ dist
 coverage
 .DS_Store
 *.log
-docs/
+docs/*
+!docs/plans/
+!docs/requirements/
+!docs/ERD.md
+!docs/SPECIFICATION.md
+!docs/design.spec.md
+.worktrees/

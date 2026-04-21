@@ -42,6 +42,26 @@ export async function copySharedSkills(
   if (copied) console.log(chalk.gray(`Copied ${copied} shared skill(s)`));
 }
 
+export async function copySharedAgents(
+  targetPath: string,
+  sharedDir: string,
+): Promise<void> {
+  const agentsTarget = path.join(targetPath, '.claude', 'agents');
+  const src = path.join(sharedDir, 'agents');
+  if (!(await fse.pathExists(src))) return;
+  await fse.ensureDir(agentsTarget);
+  let copied = 0;
+  const entries = await fse.readdir(src);
+  for (const entry of entries) {
+    if (!entry.endsWith('.md')) continue;
+    const dest = path.join(agentsTarget, entry);
+    if (await fse.pathExists(dest)) continue;
+    await fse.copy(path.join(src, entry), dest);
+    copied++;
+  }
+  if (copied) console.log(chalk.gray(`Copied ${copied} shared agent(s) to .claude/agents/`));
+}
+
 export async function fetchSharedDir(): Promise<string> {
   const tmp = path.join(os.tmpdir(), `cfsa-shared-${process.pid}-${Date.now()}`);
   console.log(chalk.gray('Fetching shared resources from repository...'));

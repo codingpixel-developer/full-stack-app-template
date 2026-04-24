@@ -46,7 +46,7 @@ my-project/
 ├── backend/          # NestJS template
 ├── admin/            # React (Vite) admin panel
 ├── mobile-app/       # placeholder (CLAUDE.md only)
-├── .agent/skills/    # shared cross-cutting skills
+├── .claude/skills/    # shared cross-cutting skills
 ├── .gitignore
 └── CLAUDE.md
 ```
@@ -82,7 +82,7 @@ Skills in `shared/skills/` are copied into every generated project and cover cro
 Each template organises its AI agent knowledge into two folders:
 
 ```
-.agent/
+.claude/
 ├── skills/     # Guided workflows (how to add pages, components, auth, etc.)
 └── rules/      # Coding standards always applied (naming, file size, no magic strings)
 ```

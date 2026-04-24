@@ -11,7 +11,7 @@
 Follow this order for all new work:
 1. Brainstorm → 2. Design → 3. Plan → 4. Scaffold → 5. Implement → 6. Test → 7. Review → 8. Deploy
 
-See `.agent/skills/workflow-guide/` for the full process.
+See `.claude/skills/workflow-guide/` for the full process.
 
 ## Skills
 

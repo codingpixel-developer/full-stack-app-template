@@ -27,7 +27,7 @@ export async function copySharedSkills(
   skills: string[],
   sharedDir: string,
 ): Promise<void> {
-  const skillsTarget = path.join(targetPath, '.agent', 'skills');
+  const skillsTarget = path.join(targetPath, '.claude', 'skills');
   await fse.ensureDir(skillsTarget);
   let copied = 0;
   for (const skill of skills) {

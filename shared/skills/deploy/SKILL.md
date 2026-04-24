@@ -13,8 +13,8 @@ Deployment is handled per-template. Each template has its own skill(s) covering 
 
 | Task | Skill |
 |------|-------|
-| Generate a multi-stage Dockerfile | `nest-template/.agent/skills/write-dockerfile/SKILL.md` |
-| Create a GitHub Actions workflow (Docker → SSH deploy) | `nest-template/.agent/skills/github-workflow-docker-deploy/SKILL.md` |
+| Generate a multi-stage Dockerfile | `nest-template/.claude/skills/write-dockerfile/SKILL.md` |
+| Create a GitHub Actions workflow (Docker → SSH deploy) | `nest-template/.claude/skills/github-workflow-docker-deploy/SKILL.md` |
 
 **Pattern:** Two-stage Docker build → push to GHCR → SSH deploy → run migrations → restart container.
 
@@ -24,8 +24,8 @@ Deployment is handled per-template. Each template has its own skill(s) covering 
 
 | Task | Skill |
 |------|-------|
-| Generate a multi-stage Dockerfile | `next-template/.agent/skills/write-dockerfile/SKILL.md` |
-| Create a GitHub Actions workflow (Docker → SSH deploy) | `next-template/.agent/skills/github-workflow-docker-deploy/SKILL.md` |
+| Generate a multi-stage Dockerfile | `next-template/.claude/skills/write-dockerfile/SKILL.md` |
+| Create a GitHub Actions workflow (Docker → SSH deploy) | `next-template/.claude/skills/github-workflow-docker-deploy/SKILL.md` |
 
 **Pattern:** Two-stage Docker build using Next.js `standalone` output → push to GHCR → SSH deploy → restart container. No migrations.
 
@@ -35,7 +35,7 @@ Deployment is handled per-template. Each template has its own skill(s) covering 
 
 | Task | Skill |
 |------|-------|
-| Create a GitHub Actions workflow (SCP → nginx deploy) | `react-template/.agent/skills/github-workflow-deploy/SKILL.md` |
+| Create a GitHub Actions workflow (SCP → nginx deploy) | `react-template/.claude/skills/github-workflow-deploy/SKILL.md` |
 
 **Pattern:** Vite builds `dist/` → `.env` fetched from server before build → SCP `dist/` to server → nginx serves static files. No Docker needed.
 

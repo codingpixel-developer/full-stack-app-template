@@ -5,7 +5,7 @@
 - `<%= m.folder %>/` — <%= m.label %>
 <% }); -%>
 - `docs/` — All project documentation
-- `.agent/skills/` — cross-cutting skills
+- `.claude/skills/` — cross-cutting skills
 
 ## Documentation Rules
 
@@ -29,7 +29,7 @@ This project is scaffolded by `create-fullstack-app`. The installed modules are 
 ## Global Conventions
 
 - Always read the relevant `CLAUDE.md` before working in a sub-project
-- For cross-cutting work, start with `.agent/skills/create-feature/`
+- For cross-cutting work, start with `.claude/skills/create-feature/`
 
 ## Sub-Project Documentation
 

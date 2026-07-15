@@ -1,0 +1,4 @@
+{
+  "cli/**/*.ts": "prettier --write",
+  "{cli,shared}/**/*.{json,md,yml,yaml}": "prettier --write --ignore-unknown"
+}

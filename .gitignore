@@ -7,3 +7,4 @@ coverage
 *.log
 docs/
 .worktrees/
+graphify-out

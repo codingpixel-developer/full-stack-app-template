@@ -47,7 +47,10 @@ export async function generateClaudeMd(
   const view = { projectName, modules: buildModuleViews(modules) };
 
   const rootContent = ejs.render(await fse.readFile(rootFile, 'utf-8'), view);
-  const fullstackContent = ejs.render(await fse.readFile(fullstackFile, 'utf-8'), view);
+  const fullstackContent = ejs.render(
+    await fse.readFile(fullstackFile, 'utf-8'),
+    view,
+  );
 
   await fse.writeFile(
     path.join(targetPath, 'CLAUDE.md'),

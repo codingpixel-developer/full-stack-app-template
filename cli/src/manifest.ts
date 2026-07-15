@@ -21,7 +21,9 @@ export function manifestPath(projectDir: string): string {
   return path.join(projectDir, MANIFEST_FILE);
 }
 
-export async function readManifest(projectDir: string): Promise<Manifest | null> {
+export async function readManifest(
+  projectDir: string,
+): Promise<Manifest | null> {
   const p = manifestPath(projectDir);
   if (!(await fse.pathExists(p))) return null;
   try {
@@ -38,7 +40,10 @@ export async function readManifest(projectDir: string): Promise<Manifest | null>
   }
 }
 
-export async function writeManifest(projectDir: string, manifest: Manifest): Promise<void> {
+export async function writeManifest(
+  projectDir: string,
+  manifest: Manifest,
+): Promise<void> {
   await fse.writeJson(manifestPath(projectDir), manifest, { spaces: 2 });
 }
 

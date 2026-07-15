@@ -15,12 +15,7 @@ import {
   fetchSharedDir,
 } from '../scaffold';
 import { mergeRootPackageJson } from '../utils/workspace';
-import {
-  Manifest,
-  ModuleKey,
-  mergeManifest,
-  writeManifest,
-} from '../manifest';
+import { Manifest, ModuleKey, mergeManifest, writeManifest } from '../manifest';
 import { printNextSteps } from './new-project';
 
 export async function runAddModule(manifest: Manifest): Promise<void> {
@@ -60,7 +55,11 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
   const mergedModules = { ...manifest.modules, ...newEntries };
   const sharedDir = await fetchSharedDir();
   try {
-    await copySharedSkills(projectDir, skillsForModules(mergedModules), sharedDir);
+    await copySharedSkills(
+      projectDir,
+      skillsForModules(mergedModules),
+      sharedDir,
+    );
     await copySharedAgents(projectDir, sharedDir);
     await ensureClaudeState(projectDir);
   } finally {
@@ -75,6 +74,10 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
       `\nReminder: CLAUDE.md was not modified. Update it to reference the new module(s).`,
     ),
   );
-  console.log(chalk.green(`\nAdded ${Object.keys(newEntries).length} module(s) to ${manifest.projectName}.`));
+  console.log(
+    chalk.green(
+      `\nAdded ${Object.keys(newEntries).length} module(s) to ${manifest.projectName}.`,
+    ),
+  );
   printNextSteps(undefined, newEntries, false);
 }

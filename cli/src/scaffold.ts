@@ -59,7 +59,10 @@ export async function copySharedAgents(
     await fse.copy(path.join(src, entry), dest);
     copied++;
   }
-  if (copied) console.log(chalk.gray(`Copied ${copied} shared agent(s) to .claude/agents/`));
+  if (copied)
+    console.log(
+      chalk.gray(`Copied ${copied} shared agent(s) to .claude/agents/`),
+    );
 }
 
 export async function ensureClaudeState(targetPath: string): Promise<void> {
@@ -72,7 +75,10 @@ export async function ensureClaudeState(targetPath: string): Promise<void> {
 }
 
 export async function fetchSharedDir(): Promise<string> {
-  const tmp = path.join(os.tmpdir(), `cfsa-shared-${process.pid}-${Date.now()}`);
+  const tmp = path.join(
+    os.tmpdir(),
+    `cfsa-shared-${process.pid}-${Date.now()}`,
+  );
   console.log(chalk.gray('Fetching shared resources from repository...'));
   await fetchRepo(parentSpec('shared'), tmp);
   return tmp;
@@ -86,12 +92,18 @@ export async function scaffoldModule(
   const modulePath = path.join(projectDir, entry.folder);
 
   if (await fse.pathExists(modulePath)) {
-    console.log(chalk.yellow(`Skipping ${MODULE_LABELS[moduleKey]}: ${entry.folder}/ already exists`));
+    console.log(
+      chalk.yellow(
+        `Skipping ${MODULE_LABELS[moduleKey]}: ${entry.folder}/ already exists`,
+      ),
+    );
     return;
   }
 
   if (moduleKey === 'mobile') {
-    console.log(chalk.yellow(`Creating mobile-app placeholder (coming soon)...`));
+    console.log(
+      chalk.yellow(`Creating mobile-app placeholder (coming soon)...`),
+    );
     await fse.ensureDir(modulePath);
     await fse.writeFile(
       path.join(modulePath, 'CLAUDE.md'),
@@ -102,12 +114,16 @@ export async function scaffoldModule(
 
   const template = templates[entry.template];
   if (!template) {
-    throw new Error(`Unknown template "${entry.template}" for module ${moduleKey}`);
+    throw new Error(
+      `Unknown template "${entry.template}" for module ${moduleKey}`,
+    );
   }
 
   if (template.comingSoon) {
     console.log(
-      chalk.yellow(`${template.displayName} integration coming soon — creating placeholder at ${entry.folder}/...`),
+      chalk.yellow(
+        `${template.displayName} integration coming soon — creating placeholder at ${entry.folder}/...`,
+      ),
     );
     await fse.ensureDir(modulePath);
     await fse.writeFile(
@@ -117,7 +133,11 @@ export async function scaffoldModule(
     return;
   }
 
-  console.log(chalk.gray(`Fetching ${template.displayName} template -> ${entry.folder}/...`));
+  console.log(
+    chalk.gray(
+      `Fetching ${template.displayName} template -> ${entry.folder}/...`,
+    ),
+  );
   await fetchRepo(templateSpec(template.repo!, template.repoRef), modulePath);
 }
 

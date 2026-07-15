@@ -91,7 +91,11 @@ export function printNextSteps(
   (Object.keys(modules) as ModuleKey[]).forEach((key) => {
     const entry = modules[key]!;
     if (isComingSoon(entry, key)) {
-      console.log(chalk.yellow(`  ${entry.folder}/ — ${MODULE_LABELS[key]} (coming soon)`));
+      console.log(
+        chalk.yellow(
+          `  ${entry.folder}/ — ${MODULE_LABELS[key]} (coming soon)`,
+        ),
+      );
     } else {
       console.log(chalk.gray(`  npm run dev:${entry.folder}`));
     }

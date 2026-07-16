@@ -1,9 +1,9 @@
+
 ## Project Structure
 
 <% modules.forEach(function(m) { -%>
-
 - `<%= m.folder %>/` — <%= m.label %>
-  <% }); -%>
+<% }); -%>
 - `docs/` — All project documentation
 - `.claude/skills/` — cross-cutting skills
 
@@ -36,7 +36,6 @@ This project is scaffolded by `create-fullstack-app`. The installed modules are 
 
 <% modules.forEach(function(m) { -%>
 <% if (m.hasClaudeMd) { -%>
-
 - [<%= m.label %>](<%= m.folder %>/CLAUDE.md)
-  <% } -%>
-  <% }); -%>
+<% } -%>
+<% }); -%>

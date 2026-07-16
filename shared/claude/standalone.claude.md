@@ -1,3 +1,4 @@
+
 ## Global Conventions
 
 - Always read `CLAUDE.md` before starting any work

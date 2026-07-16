@@ -1,9 +1,9 @@
-
 ## Project Structure
 
 <% modules.forEach(function(m) { -%>
+
 - `<%= m.folder %>/` — <%= m.label %>
-<% }); -%>
+  <% }); -%>
 - `docs/` — All project documentation
 - `.claude/skills/` — cross-cutting skills
 
@@ -30,11 +30,13 @@ This project is scaffolded by `create-fullstack-app`. The installed modules are 
 
 - Always read the relevant `CLAUDE.md` before working in a sub-project
 - For cross-cutting work, start with `.claude/skills/create-feature/`
+- **Function size** — no function may exceed **300–350 lines**; split large functions into smaller, focused ones (several small functions are always preferred over one big function)
 
 ## Sub-Project Documentation
 
 <% modules.forEach(function(m) { -%>
 <% if (m.hasClaudeMd) { -%>
+
 - [<%= m.label %>](<%= m.folder %>/CLAUDE.md)
-<% } -%>
-<% }); -%>
+  <% } -%>
+  <% }); -%>

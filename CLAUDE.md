@@ -11,6 +11,10 @@ Project scaffolding system with reusable templates and a CLI tool for generating
 - `next-template/` — Next.js frontend template
 - `docs/plans/` — Design and implementation plans
 
+## Coding Standards
+
+- **Function size** — no function (in `cli/` or any code across this monorepo) may exceed **300–350 lines**. Prefer splitting large functions into smaller, focused functions — several small functions are always better than one large 350-line function. Each template repo enforces the same in its own coding standards.
+
 ## CLI Tool
 
 Build and run locally:

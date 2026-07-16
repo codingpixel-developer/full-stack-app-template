@@ -34,12 +34,16 @@ export async function mergeRootPackageJson(
   newFolders: string[],
 ): Promise<void> {
   const pkgPath = path.join(targetPath, 'package.json');
-  const existing = (await fse.pathExists(pkgPath)) ? await fse.readJson(pkgPath) : {};
+  const existing = (await fse.pathExists(pkgPath))
+    ? await fse.readJson(pkgPath)
+    : {};
 
   const currentWorkspaces: string[] = Array.isArray(existing.workspaces)
     ? existing.workspaces
     : [];
-  const mergedWorkspaces = Array.from(new Set([...currentWorkspaces, ...newFolders]));
+  const mergedWorkspaces = Array.from(
+    new Set([...currentWorkspaces, ...newFolders]),
+  );
 
   const existingScripts: Record<string, string> = existing.scripts || {};
   const newScripts = scriptsFor(newFolders);

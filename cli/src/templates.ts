@@ -16,21 +16,24 @@ export const templates: Record<string, Template> = {
     displayName: 'NestJS',
     type: 'backend',
     repo: 'codingpixel-developer/nestjs-tempate',
-    description: 'NestJS 11 with PostgreSQL, TypeORM, JWT auth, and transactional email',
+    description:
+      'NestJS 11 with PostgreSQL, TypeORM, JWT auth, and transactional email',
   },
   react: {
     name: 'react',
     displayName: 'React (Vite)',
     type: 'frontend',
     repo: 'codingpixel-developer/react-template',
-    description: 'React 19 with Vite 7, Tailwind CSS v4, Redux Toolkit, React Router v7',
+    description:
+      'React 19 with Vite 7, Tailwind CSS v4, Redux Toolkit, React Router v7',
   },
   next: {
     name: 'next',
     displayName: 'Next.js',
     type: 'frontend',
     repo: 'codingpixel-developer/next-js-template',
-    description: 'Next.js 16 App Router with Tailwind CSS v4, Redux Toolkit, next-themes',
+    description:
+      'Next.js 16 App Router with Tailwind CSS v4, Redux Toolkit, next-themes',
   },
   supabase: {
     name: 'supabase',

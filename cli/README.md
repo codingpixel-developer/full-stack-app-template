@@ -22,12 +22,20 @@ create-fullstack-app
 
 ## Modules
 
-| Key | Folder | Templates |
-|-----|--------|-----------|
-| `webApp` | `web-app/` | Next.js, React (Vite) |
-| `backend` | `backend/` | NestJS (Supabase, Firebase — coming soon) |
-| `admin` | `admin/` | React (Vite) |
-| `mobile` | `mobile-app/` | placeholder (coming soon) |
+| Key       | Folder        | Templates                                 |
+| --------- | ------------- | ----------------------------------------- |
+| `webApp`  | `web-app/`    | Next.js, React (Vite)                     |
+| `backend` | `backend/`    | NestJS (Supabase, Firebase — coming soon) |
+| `admin`   | `admin/`      | React (Vite)                              |
+| `mobile`  | `mobile-app/` | placeholder (coming soon)                 |
+
+## What the templates include
+
+Scaffolded projects come batteries-included:
+
+- **Backend (NestJS)** — JWT auth (+ admin), rate limiting (throttler) + Helmet, Redis-backed caching / BullMQ queues / refresh-token store (real logout), HTTP request logger, extensible response transformer (`@AssetUrl`), Swagger, and a `docker-compose.yml` for Postgres + Redis.
+- **Frontends (Next.js / React)** — TanStack Query, error boundaries, Formik + Yup (validate-on-blur), Redux Toolkit, Tailwind v4; the React template adds route-level code splitting and a gzip-compressed build.
+- **All repos** — Husky hooks (lint-staged + Prettier + commitlint), a shared 300–350-line function-size rule, and per-project `CLAUDE.md` docs.
 
 ## Manifest
 
@@ -35,11 +43,11 @@ Every scaffolded project gets `fullstack.config.json`:
 
 ```json
 {
-  "cliVersion": "0.1.0",
+  "cliVersion": "0.2.0",
   "createdAt": "2026-04-15T08:00:00Z",
   "projectName": "my-app",
   "modules": {
-    "webApp":  { "template": "next", "folder": "web-app" },
+    "webApp": { "template": "next", "folder": "web-app" },
     "backend": { "template": "nest", "folder": "backend" }
   }
 }

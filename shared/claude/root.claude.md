@@ -13,6 +13,10 @@ Follow this order for all new work:
 
 See `.claude/skills/workflow-guide/` for the full process.
 
+## Coding Standards
+
+- **Function size** — no function may exceed **300–350 lines**; split large functions into smaller, focused ones (several small functions are always preferred over one big function). Follow each sub-project's `.claude/rules/` for the full standards.
+
 ## Skills
 
 | Skill | Description |

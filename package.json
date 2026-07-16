@@ -2,5 +2,15 @@
   "name": "templates",
   "version": "1.0.0",
   "private": true,
-  "description": "Project scaffolding system with reusable templates and CLI tool"
+  "description": "Project scaffolding system with reusable templates and CLI tool",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
+    "prettier": "^3.9.5"
+  }
 }

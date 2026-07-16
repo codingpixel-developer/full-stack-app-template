@@ -1,5 +1,9 @@
 import inquirer from 'inquirer';
-import { getFrontendTemplates, getBackendTemplates, templates } from './templates';
+import {
+  getFrontendTemplates,
+  getBackendTemplates,
+  templates,
+} from './templates';
 import { ModuleKey, ModuleEntry } from './manifest';
 
 export const MODULE_FOLDERS: Record<ModuleKey, string> = {
@@ -34,7 +38,8 @@ export async function promptProjectName(): Promise<string> {
       message: 'Project name:',
       validate: (input: string) => {
         if (!input.trim()) return 'Project name is required';
-        if (!/^[a-z0-9-]+$/.test(input)) return 'Use lowercase letters, numbers, and hyphens only';
+        if (!/^[a-z0-9-]+$/.test(input))
+          return 'Use lowercase letters, numbers, and hyphens only';
         return true;
       },
     },
@@ -124,7 +129,10 @@ export async function buildModuleEntries(
   return entries;
 }
 
-export function isComingSoon(entry: ModuleEntry, moduleKey: ModuleKey): boolean {
+export function isComingSoon(
+  entry: ModuleEntry,
+  moduleKey: ModuleKey,
+): boolean {
   if (moduleKey === 'mobile') return true;
   const t = templates[entry.template];
   return !!t?.comingSoon;

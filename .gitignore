@@ -7,3 +7,5 @@ coverage
 *.log
 docs/
 .worktrees/
+graphify-out
+.claude/settings.local.json

@@ -30,6 +30,7 @@ This project is scaffolded by `create-fullstack-app`. The installed modules are 
 
 - Always read the relevant `CLAUDE.md` before working in a sub-project
 - For cross-cutting work, start with `.claude/skills/create-feature/`
+- **Function size** — no function may exceed **300–350 lines**; split large functions into smaller, focused ones (several small functions are always preferred over one big function)
 
 ## Sub-Project Documentation
 

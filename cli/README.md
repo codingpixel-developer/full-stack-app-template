@@ -45,7 +45,7 @@ Every scaffolded project gets `fullstack.config.json`:
 
 ```json
 {
-  "cliVersion": "0.2.0",
+  "cliVersion": "0.3.0",
   "createdAt": "2026-04-15T08:00:00Z",
   "projectName": "my-app",
   "modules": {

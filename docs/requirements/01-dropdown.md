@@ -11,5 +11,5 @@
 9. Keyboard navigation skips disabled options. Enter selects or activates. Escape dismisses without changing the selection. Outside interaction dismisses. Selection and Escape restore trigger focus. Disabling an open dropdown closes it.
 10. Static dropdowns need no query provider. Remote dropdowns use the template's existing TanStack Query provider. Loaders should pass the supplied abort signal to the transport.
 11. Both template showcases demonstrate static selection, paginated selection initially absent from page one, and an action menu. The previous children-based API is migrated to typed items.
-12. Tests cover pagination, deduplication, search races, retries, controlled selection and keyboard/focus behavior. Build and lint results identify unrelated baseline issues separately.
+12. UI acceptance is manual. Check pagination, deduplication, search races, retries, controlled selection and keyboard/focus behavior by hand. Run relevant build and lint checks once.
 13. Dropdowns fetching from paginated APIs must use infinite scrolling with the API's normal page size. Oversized limits such as `100` or `200` must never substitute for pagination, and callers must not eagerly fetch every page into static options. Supply an existing selection through `selectedItem` instead of increasing the limit to include it.

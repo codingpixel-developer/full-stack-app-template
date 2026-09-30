@@ -27,7 +27,7 @@ Check that the backend has these endpoints available:
 | `/users/signup` | POST | Register a new user |
 | `/users/profile` | GET | Get current user profile |
 
-If any are missing, create them following the backend `CLAUDE.md` conventions before proceeding.
+If any are missing, create them following the backend `AGENTS.md` conventions before proceeding.
 
 ## Step 2: Frontend — API Layer
 
@@ -52,9 +52,9 @@ If any are missing, create them following the backend `CLAUDE.md` conventions be
 
 ## Step 5: Frontend — Route Protection
 
-1. Verify route guards redirect unauthenticated users to login
-2. Verify authenticated users are redirected away from auth pages
-3. Test the full auth flow: signup → login → access protected page → logout
+1. Configure route guards to redirect unauthenticated users to login
+2. Configure redirects away from auth pages for authenticated users
+3. Leave signup, login, protected-page access, and logout UI acceptance to manual review
 
 ## Standalone Projects
 

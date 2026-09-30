@@ -10,13 +10,12 @@ import {
   workspaceFolders,
   skillsForModules,
   copySharedSkills,
-  copySharedAgents,
-  ensureClaudeState,
   fetchSharedDir,
 } from '../scaffold';
 import { mergeRootPackageJson } from '../utils/workspace';
 import { Manifest, ModuleKey, mergeManifest, writeManifest } from '../manifest';
 import { printNextSteps } from './new-project';
+import { ensureRootAgentInstructions } from '../utils/agent-instructions';
 
 export async function runAddModule(manifest: Manifest): Promise<void> {
   const installed = manifest.modules;
@@ -53,6 +52,7 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
   }
 
   const mergedModules = { ...manifest.modules, ...newEntries };
+  await ensureRootAgentInstructions(projectDir);
   const sharedDir = await fetchSharedDir();
   try {
     await copySharedSkills(
@@ -60,8 +60,6 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
       skillsForModules(mergedModules),
       sharedDir,
     );
-    await copySharedAgents(projectDir, sharedDir);
-    await ensureClaudeState(projectDir);
   } finally {
     await fse.remove(sharedDir);
   }
@@ -71,7 +69,7 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
 
   console.log(
     chalk.yellow(
-      `\nReminder: CLAUDE.md was not modified. Update it to reference the new module(s).`,
+      `\nReminder: AGENTS.md was not modified. Update it to reference the new module(s).`,
     ),
   );
   console.log(

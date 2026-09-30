@@ -18,7 +18,7 @@ create-fullstack-app
 ## What it does
 
 - **New project** — empty directory → prompts project name, module checkbox, per-module template, git init. Creates subfolder project with npm workspaces.
-- **Add modules** — inside an existing scaffolded project (detects `fullstack.config.json`) → lists installed modules, prompts which missing ones to add, fetches templates, merges workspaces, preserves your `CLAUDE.md`.
+- **Add modules** — inside an existing scaffolded project (detects `fullstack.config.json`) → lists installed modules, prompts which missing ones to add, fetches templates, merges workspaces, preserves your `AGENTS.md`.
 
 ## Modules
 
@@ -35,7 +35,9 @@ Scaffolded projects come batteries-included:
 
 - **Backend (NestJS)** — JWT auth (+ admin), rate limiting (throttler) + Helmet, Redis-backed caching / BullMQ queues / refresh-token store (real logout), HTTP request logger, extensible response transformer (`@AssetUrl`), Swagger, and a `docker-compose.yml` for Postgres + Redis.
 - **Frontends (Next.js / React)** — TanStack Query, error boundaries, Formik + Yup (validate-on-blur), Redux Toolkit, Tailwind v4; the React template adds route-level code splitting and a gzip-compressed build.
-- **All repos** — Husky hooks (lint-staged + Prettier + commitlint), a shared 300–350-line function-size rule, and per-project `CLAUDE.md` docs.
+- **All repos** — Husky hooks (lint-staged + Prettier + commitlint), a shared 300–350-line function-size rule, and per-project `AGENTS.md` docs.
+
+Generated projects use `AGENTS.md` for project rules and `.agents/skills/` for shared workflows. `CLAUDE.md` points to `AGENTS.md`; `.claude/skills/` remains a compatibility copy for Claude Code.
 
 ## Manifest
 
@@ -74,7 +76,7 @@ CFSA_REF=v1.2.0 npx @codingpixel/create-fullstack-app
 - [next-js-template](https://github.com/codingpixel-developer/next-js-template)
 - [nestjs-tempate](https://github.com/codingpixel-developer/nestjs-tempate)
 
-Shared CLAUDE.md + skills live in the [parent monorepo](https://github.com/codingpixel-developer/full-stack-app-template).
+Shared AGENTS.md + skills live in the [parent monorepo](https://github.com/codingpixel-developer/full-stack-app-template).
 
 ## License
 

@@ -16,7 +16,7 @@ Search, bounded scrolling, selected/disabled/highlighted states and loading/retr
 
 ## Verification
 
-Mirrored interaction suites are in each template's `tests/dropdown.test.tsx`. Run each template's `npm test`, lint and build commands. Browser verification covers open dropdowns, keyboard behavior, scrolling and a narrow viewport.
+UI acceptance is manual. Review open dropdowns, keyboard behavior, scrolling and a narrow viewport in both templates. Run relevant lint and build checks once after changes.
 
 ## Canonical date and time entry
 

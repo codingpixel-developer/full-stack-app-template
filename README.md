@@ -6,9 +6,9 @@ Project scaffolding system with a CLI tool and three production-ready templates 
 
 | Template | Stack | Docs |
 |----------|-------|------|
-| `nest-template` | NestJS 11, PostgreSQL, TypeORM, JWT auth | [CLAUDE.md](nest-template/CLAUDE.md) |
-| `next-template` | Next.js 16, React 19, Redux Toolkit, Tailwind v4 | [CLAUDE.md](next-template/CLAUDE.md) |
-| `react-template` | React 19, Vite 7, Redux Toolkit, Tailwind v4 | [CLAUDE.md](react-template/CLAUDE.md) |
+| `nest-template` | NestJS 11, PostgreSQL, TypeORM, JWT auth | [AGENTS.md](nest-template/AGENTS.md) |
+| `next-template` | Next.js 16, React 19, Redux Toolkit, Tailwind v4 | [AGENTS.md](next-template/AGENTS.md) |
+| `react-template` | React 19, Vite 7, Redux Toolkit, Tailwind v4 | [AGENTS.md](react-template/AGENTS.md) |
 
 ## CLI
 
@@ -31,24 +31,26 @@ The CLI prompts for:
 | Prompt | Options |
 |--------|---------|
 | Project name | lowercase, hyphens only |
-| Project type | fullstack / frontend / backend |
-| Frontend | Next.js or React (Vite) |
+| Modules | web app / backend / admin / mobile |
+| Web app | Next.js or React (Vite) |
 | Backend | NestJS, Supabase (coming soon), Firebase (coming soon) |
-| Admin panel | copies `react-template` → `admin/` |
-| Mobile app | creates `mobile-app/` placeholder (coming soon) |
+| Admin panel | React (Vite) |
+| Mobile app | placeholder (coming soon) |
 | Git init | yes / no |
 
 ### Generated project structure (fullstack + admin + mobile)
 
 ```
 my-project/
-├── frontend/         # chosen frontend template
+├── web-app/          # chosen frontend template
 ├── backend/          # NestJS template
 ├── admin/            # React (Vite) admin panel
-├── mobile-app/       # placeholder (CLAUDE.md only)
-├── .claude/skills/    # shared cross-cutting skills
+├── mobile-app/       # placeholder with AGENTS.md
+├── .agents/skills/    # shared cross-cutting skills
+├── .claude/skills/    # compatibility copy for Claude Code
 ├── .gitignore
-└── CLAUDE.md
+├── CLAUDE.md         # points to AGENTS.md
+└── AGENTS.md         # project rules
 ```
 
 ## Repository Structure
@@ -60,8 +62,9 @@ my-project/
 ├── react-template/       # React (Vite) frontend template (submodule)
 ├── shared/
 │   ├── skills/           # Cross-cutting skills copied into generated projects
-│   └── claude/           # Shared CLAUDE.md fragments for AI agents
-└── CLAUDE.md             # AI agent instructions for this repo
+│   └── instructions/     # Source fragments for generated AGENTS.md
+├── CLAUDE.md             # Compatibility pointer
+└── AGENTS.md             # Agent instructions for this repo
 ```
 
 ## Shared Skills
@@ -75,11 +78,11 @@ Skills in `shared/skills/` are copied into every generated project and cover cro
 | `add-database-entity` | Entity + CRUD API + frontend pages |
 | `add-authentication` | Wire up auth across frontend + backend |
 | `deploy` | Deployment reference — delegates to per-template skills |
-| `create-tests` | Testing strategy across the full stack |
+| `create-tests` | Focused backend tests for material risks |
 
 ## Template Skills Structure
 
-Each template organises its AI agent knowledge into two folders:
+Each template has `AGENTS.md` as its instruction entry point. Its existing task guides and rules remain here:
 
 ```
 .claude/
@@ -91,12 +94,7 @@ Each template organises its AI agent knowledge into two folders:
 
 Documented in `shared/skills/workflow-guide/SKILL.md`:
 
-1. Requirements & Specification → client approval
-2. Data Modeling (ERD)
-3. Theme Definition (colors, typography, spacing)
-4. Design Spec (Figma-first or build-while-designing)
-5. Reusable Components audit
-6. Per-feature build cycle: document → build UI → integrate APIs → test
+For new projects: define requirements, data model, theme, and screen design. For each feature: confirm behavior and material risks, build, integrate APIs, then verify. Show plans for multi-step work; save them when requested. UI acceptance is manual.
 
 ## Updating Submodules
 

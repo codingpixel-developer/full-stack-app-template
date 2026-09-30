@@ -27,51 +27,21 @@ export async function copySharedSkills(
   skills: string[],
   sharedDir: string,
 ): Promise<void> {
-  const skillsTarget = path.join(targetPath, '.claude', 'skills');
-  await fse.ensureDir(skillsTarget);
   let copied = 0;
-  for (const skill of skills) {
-    const src = path.join(sharedDir, 'skills', skill);
-    const dest = path.join(skillsTarget, skill);
-    if (await fse.pathExists(dest)) continue;
-    if (await fse.pathExists(src)) {
-      await fse.copy(src, dest);
-      copied++;
+  for (const root of ['.agents', '.claude']) {
+    const skillsTarget = path.join(targetPath, root, 'skills');
+    await fse.ensureDir(skillsTarget);
+    for (const skill of skills) {
+      const src = path.join(sharedDir, 'skills', skill);
+      const dest = path.join(skillsTarget, skill);
+      if (await fse.pathExists(dest)) continue;
+      if (await fse.pathExists(src)) {
+        await fse.copy(src, dest);
+        copied++;
+      }
     }
   }
   if (copied) console.log(chalk.gray(`Copied ${copied} shared skill(s)`));
-}
-
-export async function copySharedAgents(
-  targetPath: string,
-  sharedDir: string,
-): Promise<void> {
-  const agentsTarget = path.join(targetPath, '.claude', 'agents');
-  const src = path.join(sharedDir, 'agents');
-  if (!(await fse.pathExists(src))) return;
-  await fse.ensureDir(agentsTarget);
-  let copied = 0;
-  const entries = await fse.readdir(src);
-  for (const entry of entries) {
-    if (!entry.endsWith('.md')) continue;
-    const dest = path.join(agentsTarget, entry);
-    if (await fse.pathExists(dest)) continue;
-    await fse.copy(path.join(src, entry), dest);
-    copied++;
-  }
-  if (copied)
-    console.log(
-      chalk.gray(`Copied ${copied} shared agent(s) to .claude/agents/`),
-    );
-}
-
-export async function ensureClaudeState(targetPath: string): Promise<void> {
-  const stateDir = path.join(targetPath, '.claude', 'state');
-  await fse.ensureDir(stateDir);
-  const queueFile = path.join(stateDir, 'feature-queue.json');
-  if (!(await fse.pathExists(queueFile))) {
-    await fse.writeJson(queueFile, { queue: [] }, { spaces: 2 });
-  }
 }
 
 export async function fetchSharedDir(): Promise<string> {
@@ -105,8 +75,8 @@ export async function scaffoldModule(
       chalk.yellow(`Creating mobile-app placeholder (coming soon)...`),
     );
     await fse.ensureDir(modulePath);
-    await fse.writeFile(
-      path.join(modulePath, 'CLAUDE.md'),
+    await writePlaceholderInstructions(
+      modulePath,
       '# Mobile App\n\n> Coming soon.\n',
     );
     return;
@@ -126,8 +96,8 @@ export async function scaffoldModule(
       ),
     );
     await fse.ensureDir(modulePath);
-    await fse.writeFile(
-      path.join(modulePath, 'CLAUDE.md'),
+    await writePlaceholderInstructions(
+      modulePath,
       `# ${MODULE_LABELS[moduleKey]}: ${template.displayName}\n\n> Coming soon.\n\nThis module is configured to use ${template.displayName}. Integration scaffolding will be added in a future CLI release.\n`,
     );
     return;
@@ -139,6 +109,35 @@ export async function scaffoldModule(
     ),
   );
   await fetchRepo(templateSpec(template.repo!, template.repoRef), modulePath);
+  await ensureModuleAgentInstructions(modulePath);
+}
+
+export async function ensureModuleAgentInstructions(
+  modulePath: string,
+): Promise<void> {
+  const agentsFile = path.join(modulePath, 'AGENTS.md');
+  if (await fse.pathExists(agentsFile)) return;
+
+  const claudeFile = path.join(modulePath, 'CLAUDE.md');
+  if (!(await fse.pathExists(claudeFile))) return;
+
+  const content = await fse.readFile(claudeFile, 'utf-8');
+  await fse.writeFile(agentsFile, content.replaceAll('CLAUDE.md', 'AGENTS.md'));
+  await fse.writeFile(
+    claudeFile,
+    '# Agent instructions\n\nRead [AGENTS.md](AGENTS.md) for module rules.\n',
+  );
+}
+
+async function writePlaceholderInstructions(
+  modulePath: string,
+  content: string,
+): Promise<void> {
+  await fse.writeFile(path.join(modulePath, 'AGENTS.md'), content);
+  await fse.writeFile(
+    path.join(modulePath, 'CLAUDE.md'),
+    '# Agent instructions\n\nRead [AGENTS.md](AGENTS.md) for module rules.\n',
+  );
 }
 
 export function workspaceFolders(

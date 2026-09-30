@@ -15,12 +15,10 @@ import {
   createGitignore,
   skillsForModules,
   copySharedSkills,
-  copySharedAgents,
-  ensureClaudeState,
   fetchSharedDir,
 } from '../scaffold';
 import { createRootPackageJson } from '../utils/workspace';
-import { generateClaudeMd } from '../utils/claude-md';
+import { generateAgentInstructions } from '../utils/agent-instructions';
 import { initGitRepo } from '../utils/git';
 import { Manifest, ModuleKey, writeManifest, getCliVersion } from '../manifest';
 
@@ -51,10 +49,13 @@ export async function runNewProject(): Promise<void> {
 
   const sharedDir = await fetchSharedDir();
   try {
-    await generateClaudeMd(targetPath, projectName, modules, sharedDir);
+    await generateAgentInstructions(
+      targetPath,
+      projectName,
+      modules,
+      sharedDir,
+    );
     await copySharedSkills(targetPath, skillsForModules(modules), sharedDir);
-    await copySharedAgents(targetPath, sharedDir);
-    await ensureClaudeState(targetPath);
   } finally {
     await fse.remove(sharedDir);
   }

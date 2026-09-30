@@ -1,13 +1,13 @@
 ---
 name: workflow-guide
-description: Reference for the feature-driven development pipeline. Use when starting any new work to understand the full process from requirements to deployment.
+description: Reference for project setup and the per-feature development cycle.
 ---
 
 # Workflow Guide
 
 ## The Pipeline
 
-Every project follows these stages in order. Do not skip stages.
+Use Stages 1–5 when setting up a new project. For existing projects, reuse approved requirements, models, and design decisions. Repeat Stage 6 for each feature.
 
 ---
 
@@ -19,8 +19,7 @@ Every project follows these stages in order. Do not skip stages.
   - `01-authentication.md`
   - `02-<module>.md` etc.
 - Create `docs/SPECIFICATION.md` — plain language, readable by non-technical clients (no jargon)
-- Refine both until client approves
-- **Gate:** Do not proceed until client signs off on specification
+- Refine both with the client when approval is part of the project scope
 
 ---
 
@@ -78,34 +77,32 @@ For each screen, define:
 Repeat for each feature/screen:
 
 #### 6a. Document
-Create `docs/plans/<feature>.md` covering:
-- API contracts needed (endpoints, request/response shape)
-- Third-party libraries/services needed
-- Use cases (business logic flows)
-- Test cases (business logic only — not appearance)
+Confirm the feature's API contract, behavior, and material risks from existing requirements. For multi-step work, show a short plan and ask whether to save it under `docs/plans/`. Skip a plan file for small changes.
 
-#### 6b. Build UI
-- Visual first — get it looking right with hot reload
-- No TDD during UI creation — UI is judged visually
-- Build shared components first, then wire into screen
+#### 6b. Build
+- Implement backend and frontend in the order that fits the feature; agree on the API contract before cross-stack work
+- Build shared UI components before screens that use them
+- Review UI appearance and interactions manually; do not create automated UI tests
 
 #### 6c. Integrate APIs
 - Connect data layer per use case defined in 6a
 - Handle all states: loading, error, empty, success
 
-#### 6d. Test
-- Run against the test cases written in 6a
-- Test business logic — not appearance
-- Write test cases per feature while context is fresh, not all upfront
+#### 6d. Verify
+- Run frontend typecheck, lint, and build checks relevant to changed code
+- Add focused backend tests for material business rules, security, data integrity, and regressions
+- Run affected backend tests once after changes; rerun only after a failure or fix
+- Run a broader suite when the change spans multiple modules or release risk requires it
+- Record checks run and leave UI acceptance to manual review
 
 ---
 
 ## Principles
 
-- No TDD during UI creation — UI is judged visually
-- Test business logic, not appearance
-- Write test cases per feature when context is fresh, not all upfront
+- Automated UI tests are not required; UI acceptance is manual
+- Backend tests follow risk, not a fixed test count per endpoint or provider
+- Do not require test-first implementation for every change
 - Screen specs must include all states and edge cases — not just happy paths
 - Define data models before screens — UI must match data shape
 - Identify navigation structure upfront to avoid rework
-- Everything in plain text markdown — readable by humans and Claude
+- Everything in plain text markdown — readable by people and coding agents

@@ -9,9 +9,9 @@ description: Creates a new database entity in the backend with CRUD API endpoint
 
 This skill creates a complete entity with CRUD operations across the stack. It follows the backend's module structure and the frontend's page conventions.
 
-## Step 1: Ask the User
+## Step 1: Confirm Scope
 
-Before writing any code, ask:
+Read existing requirements and code first. Resolve these details from the request or project; ask only for missing decisions:
 
 1. **Entity name** — singular, PascalCase (e.g., `Product`, `Order`)
 2. **Fields** — name, type, constraints (required, unique, default, etc.)
@@ -21,7 +21,7 @@ Before writing any code, ask:
 
 ## Step 2: Backend — Create the Module
 
-Work inside `backend/`. Follow the backend `CLAUDE.md` module structure.
+Work inside `backend/`. Follow the backend `AGENTS.md` module structure.
 
 1. Create the module folder: `src/<entity-plural>/`
 2. Create the entity file with TypeORM decorators
@@ -29,14 +29,14 @@ Work inside `backend/`. Follow the backend `CLAUDE.md` module structure.
 4. Create the service provider with CRUD operations
 5. Create the controller with REST endpoints and Swagger decorators
 6. Register the module in `app.module.ts`
-7. Write unit tests for the service
-8. Write controller tests
+7. Add focused backend tests for material business rules, access control, data integrity, or regressions
+8. Run affected backend tests and relevant build checks once
 
 **Note:** Do not generate migrations for development. TypeORM `synchronize: true` handles schema changes. Migrations are only needed for staging/production and should be generated on explicit request.
 
 ## Step 3: Frontend — Create Pages
 
-Work inside `frontend/`. Follow the frontend `CLAUDE.md` conventions.
+Work inside `web-app/` or `admin/`. Follow the frontend `AGENTS.md` conventions.
 
 1. Add API functions for the CRUD endpoints
 2. Create Redux slice if needed
@@ -44,7 +44,7 @@ Work inside `frontend/`. Follow the frontend `CLAUDE.md` conventions.
 4. Create the detail page
 5. Create create/edit forms with validation (Formik + Yup)
 6. Add routes to the route config
-7. Run `npm run build` to verify
+7. Run relevant static and build checks once; leave UI acceptance to manual review
 
 ## Standalone Backend Projects
 

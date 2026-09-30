@@ -6,4 +6,4 @@
 4. Include labels, form names, blur callbacks, required indicators, descriptions, associated errors, disabled/read-only states and clearing controls.
 5. Support independent date bounds and same-day time bounds. Time suggestion intervals default to 15 minutes and may be any integer from 1 to 60. Keyboard and pointer selection must respect bounds.
 6. Use custom calendar/time-list popups, keyboard interaction, existing light/dark theme tokens and responsive positioning.
-7. Add working examples to both showcases. Verify interaction tests, type checks, lint restrictions, production builds and browser behavior.
+7. Add working examples to both showcases. Review interactions and browser behavior manually. Run relevant type checks, lint restrictions and production builds.

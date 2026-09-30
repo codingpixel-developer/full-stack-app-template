@@ -1,2 +1,2 @@
-# EJS-templated CLAUDE.md files — prettier mangles the <% %> control flow
-shared/claude/
+# EJS-templated instruction files — Prettier mangles the <% %> control flow
+shared/instructions/

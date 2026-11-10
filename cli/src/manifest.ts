@@ -8,11 +8,18 @@ export interface ModuleEntry {
   folder: string;
 }
 
+export interface FeatureRecord {
+  version: string;
+  options: Record<string, unknown>;
+  installedAt: string;
+}
+
 export interface Manifest {
   cliVersion: string;
   createdAt: string;
   projectName: string;
   modules: Partial<Record<ModuleKey, ModuleEntry>>;
+  features?: Record<string, FeatureRecord>;
 }
 
 export const MANIFEST_FILE = 'fullstack.config.json';

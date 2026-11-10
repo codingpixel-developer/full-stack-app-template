@@ -21,12 +21,15 @@ import { createRootPackageJson } from '../utils/workspace';
 import { generateAgentInstructions } from '../utils/agent-instructions';
 import { initGitRepo } from '../utils/git';
 import { Manifest, ModuleKey, writeManifest, getCliVersion } from '../manifest';
+import { AnswersFile } from '../answers';
+import { runAddonStep } from '../addons/run';
 
-export async function runNewProject(): Promise<void> {
-  const projectName = await promptProjectName();
-  const selected = await promptModuleSelection();
-  const modules = await buildModuleEntries(selected);
-  const initGit = await promptInitGit();
+export async function runNewProject(preset?: AnswersFile): Promise<void> {
+  const projectName = preset?.projectName ?? (await promptProjectName());
+  const modules =
+    preset?.modules ??
+    (await buildModuleEntries(await promptModuleSelection()));
+  const initGit = preset ? preset.initGit : await promptInitGit();
 
   const targetPath = path.resolve(process.cwd(), projectName);
   if (await fse.pathExists(targetPath)) {
@@ -61,12 +64,13 @@ export async function runNewProject(): Promise<void> {
   }
   await createGitignore(targetPath);
 
-  const manifest: Manifest = {
+  const base: Manifest = {
     cliVersion: getCliVersion(),
     createdAt: new Date().toISOString(),
     projectName,
     modules,
   };
+  const manifest = await runAddonStep(targetPath, base, 'new', preset);
   await writeManifest(targetPath, manifest);
 
   if (initGit) {

@@ -17,7 +17,7 @@ export const templates: Record<string, Template> = {
     type: 'backend',
     repo: 'codingpixel-developer/nestjs-tempate',
     description:
-      'NestJS 11 with PostgreSQL, TypeORM, JWT auth, and transactional email',
+      'NestJS 12 with PostgreSQL, TypeORM, JWT auth, and transactional email',
   },
   react: {
     name: 'react',

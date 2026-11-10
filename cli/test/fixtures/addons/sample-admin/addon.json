@@ -1,0 +1,7 @@
+{
+  "name": "sample-admin",
+  "displayName": "Sample Admin",
+  "description": "Fixture add-on that needs the admin module",
+  "version": "1.0.0",
+  "requiresModules": ["admin"]
+}

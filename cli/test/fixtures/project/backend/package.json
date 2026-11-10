@@ -1,0 +1,6 @@
+{
+  "name": "backend",
+  "dependencies": {
+    "@nestjs/common": "^12.4.2"
+  }
+}

@@ -66,6 +66,7 @@ export async function runNewProject(preset?: AnswersFile): Promise<void> {
 
   const base: Manifest = {
     cliVersion: getCliVersion(),
+    createdWithCli: getCliVersion(),
     createdAt: new Date().toISOString(),
     projectName,
     modules,

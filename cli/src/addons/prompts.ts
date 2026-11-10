@@ -54,3 +54,11 @@ export async function promptAddonOptions(
   const questions = addon.options.map((o) => toQuestion(addon, o));
   return (await inquirer.prompt(questions)) as Record<string, unknown>;
 }
+
+export function optionDefaults(addon: AddonManifest): Record<string, unknown> {
+  const defaults: Record<string, unknown> = {};
+  for (const option of addon.options) {
+    if (option.default !== undefined) defaults[option.key] = option.default;
+  }
+  return defaults;
+}

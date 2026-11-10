@@ -3,7 +3,11 @@ import { Manifest } from '../manifest';
 import { canAddLater } from './add-later';
 import { fetchAddonsDir } from './fetch';
 import { installAddons } from './install';
-import { promptAddonOptions, promptAddonSelection } from './prompts';
+import {
+  optionDefaults,
+  promptAddonOptions,
+  promptAddonSelection,
+} from './prompts';
 import { loadRegistry } from './registry';
 import { resolveAddons } from './resolve';
 
@@ -21,6 +25,12 @@ export async function runAddonStep(
   const source = await fetchAddonsDir();
   try {
     const all = await loadRegistry(source.dir);
+    const requested = Object.keys(preset?.addons ?? {});
+    if (all.length === 0 && requested.length > 0) {
+      throw new Error(
+        `Answers file asks for add-ons (${requested.join(', ')}) but no add-ons could be loaded`,
+      );
+    }
     if (all.length === 0) return manifest;
 
     const installed = Object.keys(manifest.features ?? {});
@@ -40,7 +50,7 @@ export async function runAddonStep(
     const answers: Record<string, Record<string, unknown>> = {};
     for (const addon of addons) {
       answers[addon.name] = preset
-        ? (preset.addons[addon.name] ?? {})
+        ? { ...optionDefaults(addon), ...preset.addons[addon.name] }
         : await promptAddonOptions(addon);
     }
 
@@ -49,13 +59,19 @@ export async function runAddonStep(
         `Installing features: ${addons.map((a) => a.name).join(', ')}`,
       ),
     );
-    return await installAddons(
+    const result = await installAddons(
       projectDir,
       manifest,
       addons,
       source.dir,
       answers,
     );
+    for (const file of result.skipped) {
+      console.log(
+        chalk.yellow(`Kept your existing ${file} (add-on version not copied)`),
+      );
+    }
+    return result.manifest;
   } finally {
     await source.cleanup();
   }

@@ -34,7 +34,7 @@ export function injectJoi(
 ): string {
   return vars.reduce(
     (content, v) =>
-      content.includes(`${v.key}:`)
+      new RegExp(`^\\s*${v.key}\\s*:`, 'm').test(content)
         ? content
         : injectAtMarker(content, file, JOI_MARKER, `${v.key}: ${v.joi},`),
     validation,

@@ -17,10 +17,11 @@ export function canAddLater(
   manifest: Manifest,
   addon: AddonManifest,
 ): { ok: true } | { ok: false; reason: string } {
-  if (compareVersions(manifest.cliVersion, ADD_LATER_MIN_CLI) < 0) {
+  const createdWith = manifest.createdWithCli ?? manifest.cliVersion;
+  if (compareVersions(createdWith, ADD_LATER_MIN_CLI) < 0) {
     return {
       ok: false,
-      reason: `This project was made with CLI ${manifest.cliVersion}; adding features later needs ${ADD_LATER_MIN_CLI} or newer. Re-create the project or add this manually.`,
+      reason: `This project was made with CLI ${createdWith}; adding features later needs ${ADD_LATER_MIN_CLI} or newer. Re-create the project or add this manually.`,
     };
   }
   if (!addon.addLater) {

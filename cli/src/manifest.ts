@@ -20,6 +20,8 @@ export interface Manifest {
   projectName: string;
   modules: Partial<Record<ModuleKey, ModuleEntry>>;
   features?: Record<string, FeatureRecord>;
+  /** CLI version the project was first created with; cliVersion is the last one used. */
+  createdWithCli?: string;
 }
 
 export const MANIFEST_FILE = 'fullstack.config.json';
@@ -65,6 +67,7 @@ export function mergeManifest(
 ): Manifest {
   return {
     ...existing,
+    createdWithCli: existing.createdWithCli ?? existing.cliVersion,
     cliVersion: getCliVersion(),
     modules: { ...existing.modules, ...added },
   };

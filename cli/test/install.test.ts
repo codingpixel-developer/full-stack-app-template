@@ -24,9 +24,10 @@ async function install(m: Manifest) {
   const all = await loadRegistry(ADDONS_ROOT);
   const installed = Object.keys(m.features ?? {});
   const addons = resolveAddons(['sample-b'], all, m.modules, installed);
-  return installAddons(projectDir, m, addons, ADDONS_ROOT, {
+  const result = await installAddons(projectDir, m, addons, ADDONS_ROOT, {
     'sample-a': { greeting: 'hi' },
   });
+  return result.manifest;
 }
 
 describe('installAddons', () => {

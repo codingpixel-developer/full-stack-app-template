@@ -1,0 +1,6 @@
+{
+  "cliVersion": "0.4.0",
+  "createdAt": "2026-11-10T00:00:00.000Z",
+  "projectName": "demo",
+  "modules": { "backend": { "template": "nest", "folder": "backend" } }
+}

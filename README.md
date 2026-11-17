@@ -6,7 +6,7 @@ Project scaffolding system with a CLI tool and three production-ready templates 
 
 | Template | Stack | Docs |
 |----------|-------|------|
-| `nest-template` | NestJS 11, PostgreSQL, TypeORM, JWT auth | [AGENTS.md](nest-template/AGENTS.md) |
+| `nest-template` | NestJS 12, PostgreSQL, TypeORM, JWT auth | [AGENTS.md](nest-template/AGENTS.md) |
 | `next-template` | Next.js 16, React 19, Redux Toolkit, Tailwind v4 | [AGENTS.md](next-template/AGENTS.md) |
 | `react-template` | React 19, Vite 7, Redux Toolkit, Tailwind v4 | [AGENTS.md](react-template/AGENTS.md) |
 

@@ -25,12 +25,16 @@ node dist/index.js
 ```
 
 The CLI prompts for:
+
 - Project name and modules (web app / backend / admin / mobile)
 - Web app template (Next.js or React/Vite)
 - Backend template (NestJS, Supabase — coming soon, Firebase — coming soon)
 - Admin panel — fetches the React template into `admin/`
 - Mobile app — creates `mobile-app/` placeholder with `AGENTS.md` (coming soon)
 - Git init
+- Features (add-ons from `addons/`, when a backend is selected) and their options
+
+Add-ons: see [addons/README.md](addons/README.md). CLI tests: `cd cli && npm test` (Vitest).
 
 ## Templates
 
@@ -44,14 +48,14 @@ Each template has its own documentation:
 
 Cross-cutting skills in `shared/skills/` are copied into generated projects at `.agents/skills/`, with a compatibility copy at `.claude/skills/`:
 
-| Skill | Description |
-|-------|-------------|
-| workflow-guide | Feature-driven development pipeline reference |
-| create-feature | End-to-end feature creation across the stack |
-| add-database-entity | Entity + CRUD API + frontend pages |
-| add-authentication | Wire up auth across frontend + backend |
-| deploy | Dockerize + CI/CD (delegates to sub-project skills) |
-| create-tests | Focused backend tests for material risks |
+| Skill               | Description                                         |
+| ------------------- | --------------------------------------------------- |
+| workflow-guide      | Feature-driven development pipeline reference       |
+| create-feature      | End-to-end feature creation across the stack        |
+| add-database-entity | Entity + CRUD API + frontend pages                  |
+| add-authentication  | Wire up auth across frontend + backend              |
+| deploy              | Dockerize + CI/CD (delegates to sub-project skills) |
+| create-tests        | Focused backend tests for material risks            |
 
 ## Development Checks
 

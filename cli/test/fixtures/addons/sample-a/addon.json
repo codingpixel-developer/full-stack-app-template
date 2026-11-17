@@ -1,0 +1,38 @@
+{
+  "name": "sample-a",
+  "displayName": "Sample A",
+  "description": "Fixture add-on with backend files, env and deps",
+  "version": "1.0.0",
+  "addLater": true,
+  "options": [
+    {
+      "key": "greeting",
+      "type": "input",
+      "message": "Greeting?",
+      "default": "hello"
+    }
+  ],
+  "dependencies": { "backend": { "left-pad": "^1.3.0" } },
+  "env": [
+    {
+      "module": "backend",
+      "key": "SAMPLE_KEY",
+      "example": "abc",
+      "joi": "Joi.string().required()"
+    }
+  ],
+  "inject": [
+    {
+      "module": "backend",
+      "file": "src/app.module.ts",
+      "marker": "// cfsa:imports",
+      "line": "import { SampleModule } from './sample/sample.module';"
+    },
+    {
+      "module": "backend",
+      "file": "src/app.module.ts",
+      "marker": "// cfsa:modules",
+      "line": "SampleModule,"
+    }
+  ]
+}

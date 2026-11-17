@@ -1,0 +1,7 @@
+{
+  "name": "sample-b",
+  "displayName": "Sample B",
+  "description": "Fixture add-on that requires sample-a",
+  "version": "1.0.0",
+  "requires": ["sample-a"]
+}

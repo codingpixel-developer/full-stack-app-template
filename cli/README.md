@@ -17,8 +17,13 @@ create-fullstack-app
 
 ## What it does
 
-- **New project** — empty directory → prompts project name, module checkbox, per-module template, git init. Creates subfolder project with npm workspaces.
-- **Add modules** — inside an existing scaffolded project (detects `fullstack.config.json`) → lists installed modules, prompts which missing ones to add, fetches templates, merges workspaces, preserves your `AGENTS.md`.
+- **New project** — empty directory → prompts project name, module checkbox, per-module template, git init, then features (add-ons) when a backend is selected. Creates subfolder project with npm workspaces.
+- **Add modules** — inside an existing scaffolded project (detects `fullstack.config.json`) → lists installed modules, prompts which missing ones to add, fetches templates, merges workspaces, preserves your `AGENTS.md`. Then offers features that support adding later (projects made with CLI ≥ 0.4.0).
+- **Non-interactive** — `create-fullstack-app --answers answers.json` creates a new project from a file: `{ "projectName", "modules", "initGit", "addons": { "<name>": { options } } }`.
+
+## Features (add-ons)
+
+Add-ons live in [`addons/`](../addons/README.md) in the parent repo and are fetched at run time. Each one copies files, inserts lines at `cfsa:` markers, adds env vars and npm dependencies, and is recorded under `features` in the manifest. Set `CFSA_ADDONS_DIR` to use a local add-ons folder.
 
 ## Modules
 
@@ -45,12 +50,19 @@ Every scaffolded project gets `fullstack.config.json`:
 
 ```json
 {
-  "cliVersion": "0.3.0",
+  "cliVersion": "0.4.0",
   "createdAt": "2026-04-15T08:00:00Z",
   "projectName": "my-app",
   "modules": {
     "webApp": { "template": "next", "folder": "web-app" },
     "backend": { "template": "nest", "folder": "backend" }
+  },
+  "features": {
+    "s3": {
+      "version": "1.0.0",
+      "options": {},
+      "installedAt": "2026-04-15T08:00:00Z"
+    }
   }
 }
 ```

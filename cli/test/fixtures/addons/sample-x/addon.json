@@ -1,0 +1,7 @@
+{
+  "name": "sample-x",
+  "displayName": "Sample X",
+  "description": "Fixture add-on that conflicts with sample-a",
+  "version": "1.0.0",
+  "conflicts": ["sample-a"]
+}

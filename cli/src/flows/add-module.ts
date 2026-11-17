@@ -16,6 +16,18 @@ import { mergeRootPackageJson } from '../utils/workspace';
 import { Manifest, ModuleKey, mergeManifest, writeManifest } from '../manifest';
 import { printNextSteps } from './new-project';
 import { ensureRootAgentInstructions } from '../utils/agent-instructions';
+import { runAddonStep } from '../addons/run';
+
+async function addLaterFeatures(
+  projectDir: string,
+  manifest: Manifest,
+): Promise<void> {
+  const before = JSON.stringify(manifest.features ?? {});
+  const updated = await runAddonStep(projectDir, manifest, 'later');
+  if (JSON.stringify(updated.features ?? {}) !== before) {
+    await writeManifest(projectDir, updated);
+  }
+}
 
 export async function runAddModule(manifest: Manifest): Promise<void> {
   const installed = manifest.modules;
@@ -29,17 +41,18 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
     ),
   );
 
+  const projectDir = process.cwd();
   const allKeys: ModuleKey[] = ['webApp', 'backend', 'admin', 'mobile'];
   const missing = allKeys.filter((k) => !installed[k]);
   if (missing.length === 0) {
-    console.log(chalk.yellow('All modules already installed. Nothing to add.'));
+    console.log(chalk.gray('All modules already installed.'));
+    await addLaterFeatures(projectDir, manifest);
     return;
   }
 
   const selected = await promptModuleSelection(installed);
   const newEntries = await buildModuleEntries(selected);
 
-  const projectDir = process.cwd();
   for (const [key, entry] of Object.entries(newEntries)) {
     if (!entry) continue;
     await scaffoldModule(projectDir, key as ModuleKey, entry);
@@ -66,6 +79,7 @@ export async function runAddModule(manifest: Manifest): Promise<void> {
 
   const updated = mergeManifest(manifest, newEntries);
   await writeManifest(projectDir, updated);
+  await addLaterFeatures(projectDir, updated);
 
   console.log(
     chalk.yellow(

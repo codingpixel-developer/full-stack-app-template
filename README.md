@@ -73,12 +73,10 @@ Skills in `shared/skills/` are copied into every generated project and cover cro
 
 | Skill | Description |
 |-------|-------------|
-| `workflow-guide` | Feature-driven development pipeline (requirements → deploy) |
 | `create-feature` | End-to-end feature creation across the stack |
 | `add-database-entity` | Entity + CRUD API + frontend pages |
 | `add-authentication` | Wire up auth across frontend + backend |
 | `deploy` | Deployment reference — delegates to per-template skills |
-| `create-tests` | Focused backend tests for material risks |
 
 ## Template Skills Structure
 
@@ -91,8 +89,6 @@ Each template has `AGENTS.md` as its instruction entry point. Its existing task 
 ```
 
 ## Development Workflow
-
-Documented in `shared/skills/workflow-guide/SKILL.md`:
 
 For new projects: define requirements, data model, theme, and screen design. For each feature: confirm behavior and material risks, build, integrate APIs, then verify. Show plans for multi-step work; save them when requested. UI acceptance is manual.
 

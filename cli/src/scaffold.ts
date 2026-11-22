@@ -11,12 +11,7 @@ import { parentSpec, templateSpec } from './config';
 export function skillsForModules(
   modules: Partial<Record<ModuleKey, ModuleEntry>>,
 ): string[] {
-  const skills = new Set<string>([
-    'workflow-guide',
-    'create-feature',
-    'create-tests',
-    'deploy',
-  ]);
+  const skills = new Set<string>(['create-feature', 'deploy']);
   if (modules.backend) skills.add('add-database-entity');
   if (modules.backend && modules.webApp) skills.add('add-authentication');
   return Array.from(skills);
@@ -110,6 +105,14 @@ export async function scaffoldModule(
   );
   await fetchRepo(templateSpec(template.repo!, template.repoRef), modulePath);
   await ensureModuleAgentInstructions(modulePath);
+  await mirrorModuleSkills(modulePath);
+}
+
+export async function mirrorModuleSkills(modulePath: string): Promise<void> {
+  const src = path.join(modulePath, '.claude', 'skills');
+  const dest = path.join(modulePath, '.agents', 'skills');
+  if (!(await fse.pathExists(src)) || (await fse.pathExists(dest))) return;
+  await fse.copy(src, dest);
 }
 
 export async function ensureModuleAgentInstructions(

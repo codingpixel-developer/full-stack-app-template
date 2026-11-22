@@ -9,6 +9,7 @@ Project scaffolding system with reusable templates and a CLI tool for generating
 - `nest-template/` — NestJS backend template
 - `react-template/` — React (Vite) frontend template
 - `next-template/` — Next.js frontend template
+- `addons/` — Optional features the CLI installs on request
 - `docs/plans/` — Design and implementation plans
 
 ## Coding Standards
@@ -50,16 +51,14 @@ Cross-cutting skills in `shared/skills/` are copied into generated projects at `
 
 | Skill               | Description                                         |
 | ------------------- | --------------------------------------------------- |
-| workflow-guide      | Feature-driven development pipeline reference       |
 | create-feature      | End-to-end feature creation across the stack        |
 | add-database-entity | Entity + CRUD API + frontend pages                  |
 | add-authentication  | Wire up auth across frontend + backend              |
 | deploy              | Dockerize + CI/CD (delegates to sub-project skills) |
-| create-tests        | Focused backend tests for material risks            |
 
 ## Development Checks
 
-UI appearance and interactions are accepted manually. Do not add or run automated UI tests for frontend work. Run relevant frontend typecheck, lint, and build checks once after changes. Add focused backend tests for material business rules, security, data integrity, and regressions. Run affected backend tests once; broaden verification only when the change spans modules or a release gate requires it. See [workflow-guide](shared/skills/workflow-guide/SKILL.md).
+UI appearance and interactions are accepted manually. Do not add or run automated UI tests for frontend work. Run relevant frontend typecheck, lint, and build checks once after changes. Add focused backend tests for material business rules, security, data integrity, and regressions. Run affected backend tests once; broaden verification only when the change spans modules or a release gate requires it.
 
 ## Dropdown Standard
 

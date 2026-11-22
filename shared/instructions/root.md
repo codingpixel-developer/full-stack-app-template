@@ -10,9 +10,7 @@
 
 For new projects, establish requirements, data model, and design before implementation. For each feature, confirm behavior and material risks, implement, verify, and review. Show a plan for multi-step work; save it only when requested.
 
-See `.agents/skills/workflow-guide/` for the full process.
-
-UI acceptance is manual; do not add or run automated UI tests. Add focused backend tests only for material business rules, security, data integrity, or regressions. Run relevant static and build checks once after changes.
+UI acceptance is manual; do not add or run automated UI tests. Add focused backend tests only for material business rules, security, data integrity, or regressions; test-first is not required. Run relevant static and build checks once after changes.
 
 ## Coding Standards
 
@@ -26,5 +24,3 @@ UI acceptance is manual; do not add or run automated UI tests. Add focused backe
 | deploy | Dockerize + CI/CD setup (delegates to sub-project deployment skills) |
 | add-database-entity | Create entity + API + frontend integration |
 | add-authentication | Wire up auth across frontend + backend |
-| create-tests | Focused backend tests for material risks |
-| workflow-guide | The full pipeline process reference |
